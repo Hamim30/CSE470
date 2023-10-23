@@ -71,13 +71,26 @@ def Add_resources():
 #     return send_file(io.BytesIO(resource.up_file), mimetype='image/png')
 
 
+from flask import Flask, render_template
+import base64
+
+# ... (previous code) ...
+
+@app.route('/view')
+def View():
+    images = Resources.query.all()
+    
+    base64_images = [[base64.b64encode(image.up_file).decode("utf-8"),image] for image in images]
+    return render_template('view.html', base64_images=base64_images)
+
+# ... (previous code) ...
 
 
 @app.route('/show')
 def Show():
     all_resource=Resources.query.all()
-    print(all_resource)
-    return 'show'
+    print(all_resource,"=============")
+    
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()

@@ -1,98 +1,27 @@
-{% extends 'base.html' %}
-{% block title %} Home {% endblock title %}
-welcome {{request.user}}
-{% block body %}
-<style>
-  .view{
-      position: absolute;
-      top:50%;
-      left: 80%;
-      transform: translate(-50%,-50%);
-      width: 500px;
-      height: 500px;
-      padding: 50px 50px;
-      box-sizing:border-box;
-      background:rgb(0,0,0,5);
-      background: transparent;
-      background-color:rgba(78, 134, 108, 0.5);
-      
-  }    
-  h1{
-      margin:top ;
+<!DOCTYPE html>
+<html>
+<head>
+    <title>View Files</title>
+</head>
+<body>
 
-  font-size: xx-large;
-  font-style:normal;
-  color: black;
-  text-align: center;
-  font-weight: bold;
-  }
-  .form-group label{
-      margin: 0;
-      padding: 0 0 10px;
-      font-weight: bold;
-      font-size: 20px;
-      color:black;
-      
-  }
-  .form-group  input[type="email"],
-  .form-group  input[type="form-control"]{
-      border: none;
-       border-bottom: 1px solid #fff;
-
-      background: transparent;
-      outline: none;
-      height: 20px;
-      color: #fff;
-      font-size:  20px;
-      
-      
-  }
-
-
-  ::placeholder{
-      color:#9fc6ee;
-      text-decoration:double;
-  }
-
-</style>
-<div class="view">
-    <div class="row">
-        <div class="col-12">
-
-            <table class="table">
-             
-                <tbody>
-                    {% for resource in all_resource %}
-    <a href="{{ url_for('View', id=resource.sno) }}">View File {{ resource.sno }}</a>
-{% endfor %}
-
-                    <!-- {% for resource  in all_resource %}
-                    <tr>
-                        <th>{{loop.index}}</th>
-                        <th>{{resource.up_file}}</th>
-                        <th>{{resource.f_type}}</th>
-                        <th>{{resource.email}}</th>
-                        <th>{{resource.student_id}}</th>
-                        <th>{{resource.Course_Code}}</th>  
-                   
-                      </tr>
-
-  
-                    {% endfor %} -->
+    <ul>
+        {% for base64_image, resource in base64_images %}
+            <li>
+                <a href="javascript:void(0);" onclick="openFile('{{ base64_image }}', 'image')">View Images: {{ resource.Course_Code }}</a>
+            </li>
+            <script>
+                function openFile(base64_image, type) {
+                    var newWindow = window.open("", "_blank");
+                    
+                        newWindow.document.write('<html><head><title>Image</title></head><body><img src="data:image/jpeg;base64,' + base64_image+ '" alt="Image"></body></html>');
                   
-                  
-                </tbody>
-              </table>
+                    newWindow.document.close();
+                }
+            </script>
+        {% endfor %}
+ 
 
-
-
-        </div>
-    </div>
-</div>
-
-
-
-
-
-
-{% endblock body %}
+    
+</body>
+</html>
