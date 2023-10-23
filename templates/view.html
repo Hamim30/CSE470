@@ -62,23 +62,23 @@ welcome {{request.user}}
             <table class="table">
              
                 <tbody>
-                    {% for resource  in all_resource %}
+                    {% for resource in all_resource %}
+    <a href="{{ url_for('View', id=resource.sno) }}">View File {{ resource.sno }}</a>
+{% endfor %}
+
+                    <!-- {% for resource  in all_resource %}
                     <tr>
                         <th>{{loop.index}}</th>
+                        <th>{{resource.up_file}}</th>
+                        <th>{{resource.f_type}}</th>
                         <th>{{resource.email}}</th>
                         <th>{{resource.student_id}}</th>
-                        <th>{{resource.Description}}</th>
-                        <th>{{resource.date_created}}</th>
-                        <th>{{resource.f_type}}</th>
-                        <th>{{resource.Course_Code}}</th>
-                        
-    
-                        
-                       
+                        <th>{{resource.Course_Code}}</th>  
+                   
                       </tr>
 
   
-                    {% endfor %}
+                    {% endfor %} -->
                   
                   
                 </tbody>

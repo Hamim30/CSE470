@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, Response
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-# from flask_wtf import csrf
-
+from flask_wtf import FlaskForm
+from wtforms import FileField
+from sqlalchemy import LargeBinary
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///resources.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -17,11 +18,14 @@ class Resources(db.Model):
     Course_Code = db.Column(db.String(10), nullable=False)
     f_type = db.Column(db.String(10), nullable=False)
     Description = db.Column(db.Text, nullable=False)
+    up_file=db.Column(db.LargeBinary)
+
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
+
 
     # def __repr__(self) -> str:
     #     return f"{self.Course_Code} - {self.Description}"
-    
+  
 @app.route('/')
 def home():
     
@@ -33,26 +37,40 @@ def home():
 @app.route('/Add_resources',methods=['GET','POST'])
 def Add_resources():
     if request.method=="POST":
-        Course_Code=request.form['Course_Code']
-        email=request.form['email']
-        student_id=request.form['student_id']
-        f_type=request.form['f_type']
-        
-        Description=request.form['Description']
+        Course_Code = request.form['Course_Code']
+        email = request.form['email']
+        student_id = request.form['student_id']
+        f_type = request.form['f_type']
+        Description = request.form['Description']
 
-        resource=Resources(email=email,student_id=student_id,Course_Code=Course_Code,f_type=f_type,Description=Description)
-        db.session.add(resource)
-        db.session.commit()
+        up_file = request.files['up_file'] 
+
+        if up_file:
+            file_data = up_file.read()
+
+            resource = Resources(
+                email=email,up_file=file_data, student_id=student_id, Course_Code=Course_Code,
+                f_type=f_type, Description=Description
+            )
+
+            db.session.add(resource)
+            db.session.commit()
     all_resource=Resources.query.all()
     return render_template('Add_resources.html',all_resource=all_resource)
 
 
     return render_template('Add_resources.html')
+ 
+# from flask import send_file
+# import io
+# @app.route('/view/<int:sno>')
+# def View(sno):
+#     resource = Resources.query.get(sno)
+#     if resource is None:
+#         return "Resource not found", 404
+#     return send_file(io.BytesIO(resource.up_file), mimetype='image/png')
 
-@app.route('/view')
-def View():
-    all_resource=Resources.query.all()
-    return render_template('view.html',all_resource=all_resource)
+
 
 
 @app.route('/show')
