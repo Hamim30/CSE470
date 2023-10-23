@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title> {% block title %} {% endblock title %} BRacu Resources</title>
+        <link rel="stylesheet" href="/static/css/home.css">
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+    </head>
+</html>
+<body>
+    <div class="header">
+        <div class="wrapper">
+            <div class="logo">
+               
+                <img src="/static/pic/logo.png" alt="logo">
+
+            </div>
+            <div class="nav">
+                <ul>
+                    <li><a href="/index">Home</a></li>
+                    <li><a href="/Add_resources">Add-Resources</a></li>
+                    <li><a href="/faculty">Faculties</a></li>
+                    <li><a href="/Courses">Courses</a></li>
+                   
+                    
+                    <form action="/search" method="SEARCH" class="searchbar">
+                        <input type="text" placeholder="search courses" name="query" id="query">
+                        <button type="submit"> <img src="/static/pic/search.png" height="13px"></button> 
+                    </form>
+                    
+                </ul>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    {% block body %} 
+
+    {% endblock body %}
+
+</body>

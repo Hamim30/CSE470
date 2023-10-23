@@ -1,0 +1,108 @@
+
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background-image: url(/static/pic/log.png);
+    background-repeat: no-repeat;
+    background-size: 40%;
+    background-attachment: fixed;
+    background-position: left;
+
+
+    
+  }
+
+  #logo{
+    height: 100px;
+    width: 280px;
+    padding: 0px 650px 25px;
+  }
+  #signup{
+    color: aliceblue;
+  }
+  #sign{
+    display: flex; justify-content: center; align-items: center; padding-left: 50px;
+  }
+  #likha{
+    color: aliceblue;
+
+  }
+.containerr{
+    
+    margin-left: 70%;
+    width: 450px;
+    height: 450px;
+    background-image: linear-gradient(to right,  rgb(88, 129, 232),rgb(107, 201, 238) );
+    border-radius: 24px;
+    border: 3px solid rgba(47,47,47,0.4);
+    backdrop-filter: blur(15px);
+
+
+}
+  .container {
+    width: 500px;
+    margin: 0 auto;
+    position: fixed;
+    padding-left: 400px;
+  }
+
+  .containerr1{
+    
+    margin-left: 70%;
+    width: 450px;
+    height: 350px;
+    background-image: linear-gradient(to right,  rgb(88, 129, 232),rgb(107, 201, 238) );
+    border-radius: 24px;
+    border: 3px solid rgba(47,47,47,0.4);
+    backdrop-filter: blur(15px);
+
+
+}
+  .container1 {
+    width: 500px;
+    margin: 0 auto;
+    position: fixed;
+    padding-left: 400px;
+  }
+  #login_button{
+    width: 100px;
+    margin: 0px 140px ;
+  }
+  img {
+    width: 100%;
+  }
+  
+  h1 {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  form {
+    padding: 20px 90px 20px 30px;
+    margin-top: 20px;
+    
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    margin: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+  }
+  
+  input[type="submit"] {
+    background-color: #000;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  a {
+    text-decoration: none;
+    color: #000;
+  }
+  .input h2{
+    text-align: center;
+    font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  }
