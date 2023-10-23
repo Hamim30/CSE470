@@ -24,9 +24,7 @@ class Resources(db.Model):
     
 @app.route('/')
 def home():
-    resource=Resources(email='admin.gmail',student_id='20301357',Course_Code='cse110',f_type='lab',Description='lab files')
-    db.session.add(resource)
-    db.session.commit()
+    
     
     
     return render_template('index.html')
@@ -35,7 +33,20 @@ def home():
 @app.route('/Add_resources',methods=['GET','POST'])
 def Add_resources():
     if request.method=="POST":
-        print(request.form['Course_Code'])
+        Course_Code=request.form['Course_Code']
+        email=request.form['email']
+        student_id=request.form['student_id']
+        f_type=request.form['f_type']
+        
+        Description=request.form['Description']
+
+        resource=Resources(email=email,student_id=student_id,Course_Code=Course_Code,f_type=f_type,Description=Description)
+        db.session.add(resource)
+        db.session.commit()
+    all_resource=Resources.query.all()
+    return render_template('Add_resources.html',all_resource=all_resource)
+
+
     return render_template('Add_resources.html')
 
 @app.route('/view')
