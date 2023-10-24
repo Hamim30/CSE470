@@ -55,6 +55,7 @@ welcome {{request.user}}
   }
 
 </style>
+
 <div class="view">
     <div class="row">
         <div class="col-12">
@@ -62,29 +63,17 @@ welcome {{request.user}}
             <table class="table">
              
                 <tbody>
-                    {% for resource in all_resource %}
-                    <a href="{{ url_for('download', filename=resource.filename) }}" target="_blank">Download File</a>
-<a href="{{ url_for('serve_file', filename=resource.up_file) }}" target="_blank"> show_file {{resource.unique_name}}</a>
+                  {% for d in data %}
+                  <tr>
+                    <th>{{forloop.counter}}</th>
+                    
+                    <th>{{d.initial}}</th>
+                    <th><a  href="{{d.file.url}}">{{d.file}}</a></th>
 
-
-
-
-
-                    <!-- {% for resource  in all_resource %}
-                    <tr>
-                        <th>{{loop.index}}</th>
-                        <th>{{resource.up_file}}</th>
-                        <th>{{resource.f_type}}</th>
-                        <th>{{resource.email}}</th>
-                        <th>{{resource.student_id}}</th>
-                        <th>{{resource.Course_Code}}</th>  
+                    
                    
-                      </tr>
-
-  
-                    {% endfor %} -->
-                    {% endfor %}
-                  
+                  </tr>
+                  {% endfor %}
                 </tbody>
               </table>
 
@@ -93,7 +82,6 @@ welcome {{request.user}}
         </div>
     </div>
 </div>
-
 
 
 
