@@ -1,13 +1,9 @@
-from flask import Flask, render_template, request, Response,send_file,send_from_directory
-from io import BytesIO
+from flask import Flask, render_template, request, Response,send_file,send_from_directory,redirect, url_for
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from flask_wtf import FlaskForm
-from wtforms import FileField
-from sqlalchemy import LargeBinary
 import os
 from werkzeug.utils import secure_filename
-
+from itertools import groupby
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///resources.db"
@@ -37,16 +33,12 @@ class Resources(db.Model):
 def home():
     return render_template('index.html')
 
-@app.route('/cse1')
-def cse1():
-    all_resource=Resources.query.filter(Resources.Course_Code.like('cse1%')).all()
-    print(all_resource)
-    return render_template('cse1.html',all_resource=all_resource)
+# @app.route('/cse1')
+# def cse1():
+#     all_resource=Resources.query.filter(Resources.Course_Code.like('cse1%')).all()
+#     print(all_resource)
+#     return render_template('cse1.html',all_resource=all_resource)
 
-<<<<<<< HEAD
-
-=======
->>>>>>> 1120c614e19d0c2c6545a1eb0a021153aa826467
 @app.route('/Add_resources', methods=['GET', 'POST'])
 def Add_resources():
     filename2 = None
@@ -56,28 +48,24 @@ def Add_resources():
         student_id = request.form['student_id']
         f_type = request.form['f_type']
         Description = request.form['Description']
-<<<<<<< HEAD
-
-        up_file = request.files['up_file']
-
-        if up_file:
+    #     up_file = request.files['up_file']
+    #     if up_file:
             
         
-            filename2 = up_file.filename 
+    #         filename2 = up_file.filename 
            
-            resource = Resources(
-                email=email, up_file=filename2, student_id=student_id, Course_Code=Course_Code,
-                f_type=f_type, Description=Description
-            )
+    #         resource = Resources(
+    #             email=email, up_file=filename2, student_id=student_id, Course_Code=Course_Code,
+    #             f_type=f_type, Description=Description
+    #         )
 
-            db.session.add(resource)
-            db.session.commit()
-            up_file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(up_file.filename)))
-    all_resource = Resources.query.all()
-    return render_template('Add_resources.html', all_resource=all_resource, filename2=filename2)
-    return render_template('Add_resources.html')
-=======
->>>>>>> 1120c614e19d0c2c6545a1eb0a021153aa826467
+    #         db.session.add(resource)
+    #         db.session.commit()
+    #         up_file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(up_file.filename)))
+    # all_resource = Resources.query.all()
+    # return render_template('Add_resources.html', all_resource=all_resource, filename2=filename2)
+    # return render_template('Add_resources.html')
+
 
         up_file = request.files['up_file']
 
@@ -111,28 +99,11 @@ def View():
     return render_template('view.html',all_resource=all_resource)
 
 
-<<<<<<< HEAD
-=======
-# @app.route('/download/<file_data>')
-# def Download(file_data):
-#     resource = Resources.query.get(file_data)
-#     if resource is None:
-#         return "Resource not found", 404
-#     return send_file(BytesIO(resource.up_file), as_attachment=True, download_name=resource.Course_Code)
-
-
->>>>>>> 1120c614e19d0c2c6545a1eb0a021153aa826467
 @app.route('/get_file/<int:sno>')
 def get_file(sno):
     resource = Resources.query.get_or_404(sno)
     return Response(resource.up_file, content_type="application/octet-stream")  # Update the content type based on the file type
-<<<<<<< HEAD
 
-=======
-# @app.route('/uploads/<file_data>')
-# def serve_file(file_data):
-#     return send_from_directory(app.root_path + '/uploads', file_data)
->>>>>>> 1120c614e19d0c2c6545a1eb0a021153aa826467
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
@@ -156,15 +127,51 @@ def download(filename):
 def serve_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
-<<<<<<< HEAD
 
-=======
-@app.route('/show')
-def Show():
-    all_resource=Resources.query.all()
-    print(all_resource)
-    return 'show'
->>>>>>> 1120c614e19d0c2c6545a1eb0a021153aa826467
+
+
+
+
+@app.route('/cse1')
+def cse1():
+    all_resource=Resources.query.filter(Resources.Course_Code.like('cse1%')).all()
+    grouped_resources = {}
+    
+    # Group resources by course code
+    all_resource.sort(key=lambda x: x.Course_Code)
+    for course_code, resources in groupby(all_resource, key=lambda x: x.Course_Code):
+        grouped_resources[course_code] = list(resources)
+    
+    return render_template('cse1.html', grouped_resources=grouped_resources)
+
+comments = []
+ratings = []
+Serials=[]
+course_codes=[]
+
+
+@app.route('/comment')
+def comment():
+    return render_template('comment.html', course_data=zip(course_codes, Serials, comments, ratings))
+
+@app.route('/submit', methods=['POST'])
+def submit():
+    comment = request.form.get('comment')
+    rating = request.form.get('rating')
+    course_code=request.form.get('course_code')
+    Serial=request.form.get('num')
+    print(course_code)
+
+    if comment and rating and course_code and Serial:
+        comments.append(comment)
+        ratings.append(int(rating))
+        course_codes.append(course_code)
+        Serials.append(Serial)
+
+    print(Serials,course_codes)
+
+    return redirect(url_for('comment'))
+
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()

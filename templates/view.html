@@ -64,14 +64,7 @@ welcome {{request.user}}
                 <tbody>
                     {% for resource in all_resource %}
                     <a href="{{ url_for('download', filename=resource.filename) }}" target="_blank">Download File</a>
-<<<<<<< HEAD
 <a href="{{ url_for('serve_file', filename=resource.up_file) }}" target="_blank"> show_file {{resource.unique_name}}</a>
-=======
-<a href="{{ url_for('serve_file', filename=resource.up_file) }}" target="_blank">View File {{resource.unique_name}}</a>
->>>>>>> 1120c614e19d0c2c6545a1eb0a021153aa826467
-
-
-
 
 
                     <!-- {% for resource  in all_resource %}

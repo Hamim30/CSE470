@@ -7,7 +7,7 @@ welcome {{request.user}}
 <label for="openSidebar" class="sidebaricon">
     <div class="spinner top"></div>
     <div class="spinner middle"></div>
-    <div class="spinner bottom"></div>
+    <div class "spinner bottom"></div>
 </label>
 <div id="sidebar">
     <ul class="menu">
@@ -49,95 +49,81 @@ welcome {{request.user}}
         <li> <a href="#">Thesis</a></li>
         <li> <a href="/faculty">Faculty Informations</a></li>
         <li><a href="Course Information.html">Course Info</a></li>
-        <li> <a href="#">Contract Us</a></li>
-        <li> <a href="https://www.bracu.ac.bd/sites/default/files/academics/Year-planner/Year%20Planner%202023%20Trimester%20-%20Final%20Version-4.pdf">calender</a></li>
-        
-
-
+        <li> <a href="#">Contact Us</a></li>
+        <li> <a href="https://www.bracu.ac.bd/sites/default/files/academics/Year-planner/Year%20Planner%202023%20Trimester%20-%20Final%20Version-4.pdf">Calendar</a></li>
     </ul>
-     
 </div>
 
 <div class="main">
-    <h2> 100 level courses</h2>
+    <h2>100 level courses</h2>
     <hr>
-
-
-<div class="view">
-    <div class="row">
-        <div class="col-12">
-
-            <table class="table">
-                <tbody>
-                  {% for d in all_resource %}
-                 
-                  <a ><img src="/static/pic/cse1/{{ d.Course_Code }}.png" height="200px" alt="Image" class="image"></a>
-                        <div class="popup">
-                            
-                        <div class="popup-content">
-                            <span class="closeButton">&times;</span>
-                           
-                    </div>
-                    </div>
-                        
     
-                  {% endfor %}
-                </tbody>
-              </table>
-
-
-
+    <div class="view">
+        <div class="row">
+            <div class="col-12">
+                <table class="table">
+                    <tbody>
+                        {% for course_code, resources in grouped_resources.items() %}
+                            <a><img src="/static/pic/cse1/{{ course_code }}.png" height="200px" alt="Image" class="image"></a>
+                            <div class="popup">
+                                <div class="popup-content">
+                                    <span class="closeButton">&times;</span>
+                                    <h3>Course Code: {{ course_code }}</h3>
+                                    <ul>
+                                        {% for resource in resources %}
+                                            <li><a href="{{ url_for('serve_file', filename=resource.up_file) }}" target="_blank">Show File {{ resource.unique_name }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
 
-<style>
-    .popup {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-    }
-    
-    .popup-content {
-        background-color:rgb(233, 245, 250);
-        background-image: url(/static/pic/brac_logo.gif);
-        background-repeat:no-repeat;
-        background-position: center;
-        width: 500px;
-        padding: 20px;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        height: 500px;
-        transform: translate(-50%, -50%);
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-    }
-    
-    
-    .openButton {
-        margin-top: 20px;
-    }
-    
-    .closeButton {
-        position: absolute;
-        top: 10px;
-        right: 10px;
-        cursor: pointer;
-        
-    }
-    
-    
-     
+    <style>
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
 
-</style>
+        .popup-content {
+            background-color: rgb(233, 245, 250);
+            background-image: url(/static/pic/brac_logo.gif);
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 500px;
+            padding: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 500px;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
 
-<script src="/static/js/script.js"></script>
-   
+        .openButton {
+            margin-top: 20px;
+        }
 
+        .closeButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
+
+    <script src="/static/js/script.js"></script>
 </div>
+
 </body>
 {% endblock body %}
