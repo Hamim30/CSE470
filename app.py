@@ -117,7 +117,17 @@ def download(filename):
 @app.route('/serve_file/<filename>')
 def serve_file(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-
+@app.route('/cse1')
+def cse1():
+    all_resource=Resources.query.filter(Resources.Course_Code.like('cse1%')).all()
+    grouped_resources = {}
+    
+    # Group resources by course code
+    all_resource.sort(key=lambda x: x.Course_Code)
+    for course_code, resources in groupby(all_resource, key=lambda x: x.Course_Code):
+        grouped_resources[course_code] = list(resources)
+    
+    return render_template('cse1.html', grouped_resources=grouped_resources)
 @app.route('/show')
 def Show():
     all_resource=Resources.query.all()
