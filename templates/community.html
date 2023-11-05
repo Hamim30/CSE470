@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock title %}
+welcome {{request.user}}
+{% block body %}
+
+<input type="checkbox" id="openSidebar">
+<label for="openSidebar" class="sidebaricon">
+    <div class="spinner top"></div>
+    <div class="spinner middle"></div>
+    <div class= "spinner bottom"></div>
+</label>
+<div id="sidebar">
+    <ul class="menu">
+
+        <li class="dropdown"><a href="#" > CSE <span>&rsaquo;</span></a>
+            <ul class="coursesidebar">
+                 <a href="/cse1">100 level courses</a>
+                 <a href="/cse2">200 level courses</a>
+                <a href="/cse3">300 level courses</a>
+                <a href="/cse4">400 level courses</a>
+            </ul>
+        
+        </li>
+
+        <li class="dropdown"><a href="#" > MNS <span>&rsaquo;</span></a>
+            <ul class="coursesidebar">
+                 <a href="#">100 level courses</a>
+                 <a href="#">200 level courses</a>
+                
+            </ul>
+        
+        </li>
+        <li class="dropdown"><a href="#" > COD <span>&rsaquo;</span></a>
+            <ul class="coursesidebar">
+                 <a href="#">100 level courses</a>
+                 <a href="#">200 level courses</a>
+                <a href="#">300 level courses</a>
+            </ul>
+        
+        </li>
+        <li class="dropdown"><a href="#" > ELECTIVES <span>&rsaquo;</span></a>
+            <ul class="coursesidebar">
+                 <a href="#">100 level courses</a>
+                 <a href="#">200 level courses</a>
+                <a href="#">300 level courses</a>
+            </ul>
+        
+        </li>
+        <li> <a href="#">Thesis</a></li>
+        <li> <a href="/faculty">Faculty Informations</a></li>
+        <li><a href="\courseinfo">Course Info</a></li>
+        <li> <a href="#">Contact Us</a></li>
+        <li> <a href="https://www.bracu.ac.bd/sites/default/files/academics/Year-planner/Year%20Planner%202023%20Trimester%20-%20Final%20Version-4.pdf">Calendar</a></li>
+    </ul>
+</div>
+
+<div class="main">
+  <div class="view">
+      <div class="row">
+          <div class="col-12">
+              <a><img src="/static/pic/alumni.png" height="200px" alt="Image" class="image" onclick="openPopup(1)"></a>
+              <div class="popup" id="popup1">
+                  <div class="popup-content">
+                      <span class="closeButton" onclick="closePopup(1)">&times;</span>
+                      <form method="post" action="/submitt" id="form1" style="text-align: left;">
+                   
+                        <!-- Add your form fields and content for the first popup here -->
+                        <div style="display: flex; flex-direction: column; align-items: start;">
+                          <label for="name">Alumni Name:</label>
+                          <input type="text" id="name" name="name">
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: start;">
+                          <label for="email">Email:</label>
+                          <input type="email" id="email" name="email">
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: start;">
+                          <label for="cname">Company Name:</label>
+                          <input type="text" id="cname" name="cname">
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: start;">
+                          <label for="info">Additional Information:</label>
+                          <textarea name="info" id="info"></textarea>
+                        </div>
+                        <input type="submit" value="Submit">
+                      </form>
+                      <a href="/alumni" type="submit" >View all</a>
+                  </div>
+              </div>
+
+
+              
+              <a><img src="/static/pic/event.png" height="200px" alt="Image" class="image" onclick="openPopup(2)"></a>
+              <div class="popup" id="popup2">
+                  <div class="popup-content">
+                      <span class="closeButton" onclick="closePopup(2)">&times;</span>
+                      <form id="form2">
+                          <!-- Add your form fields and content for the second popup here -->
+                          <label for="name">Name:</label>
+                          <input type="text" id="name" name="name">
+                          <br>
+                          <label for="email">Email:</label>
+                          <input type="email" id="email" name="email">
+                          <br>
+                          <input type="submit" value="Submit">
+                      </form>
+                  </div>
+              </div>
+              <a><img src="/static/pic/intern.png" height="200px" alt="Image" class="image" onclick="openPopup(3)"></a>
+              <div class="popup" id="popup3">
+                  <div class="popup-content">
+                      <span class="closeButton" onclick="closePopup(3)">&times;</span>
+                      <form id="form3">
+                          <!-- Add your form fields and content for the third popup here -->
+                          <label for="name">Name:</label>
+                          <input type="text" id="name" name="name">
+                          <br>
+                          <label for="email">Email:</label>
+                          <input type="email" id="email" name="email">
+                          <br>
+                          <input type="submit" value="Submit">
+                      </form>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
+
+
+
+    <style>
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .popup-content {
+            background-color: rgb(233, 245, 250);
+            background-image: url(/static/pic/brac_logo.gif);
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 500px;
+            padding: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 500px;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .openButton {
+            margin-top: 20px;
+        }
+
+        .closeButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+    </style>
+
+    <script src="/static/js/script.js"></script>
+</div>
+
+</body>
+{% endblock body %}

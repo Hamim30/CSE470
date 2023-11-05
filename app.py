@@ -26,18 +26,14 @@ class Resources(db.Model):
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
 
 
-    # def __repr__(self) -> str:
-    #     return f"{self.Course_Code} - {self.Description}"
   
 @app.route('/')
 def home():
     return render_template('index.html')
+@app.route('/courseinfo')
+def cinfo():
+    return render_template('courseinfo.html')
 
-# @app.route('/cse1')
-# def cse1():
-#     all_resource=Resources.query.filter(Resources.Course_Code.like('cse1%')).all()
-#     print(all_resource)
-#     return render_template('cse1.html',all_resource=all_resource)
 
 @app.route('/Add_resources', methods=['GET', 'POST'])
 def Add_resources():
@@ -48,23 +44,6 @@ def Add_resources():
         student_id = request.form['student_id']
         f_type = request.form['f_type']
         Description = request.form['Description']
-    #     up_file = request.files['up_file']
-    #     if up_file:
-            
-        
-    #         filename2 = up_file.filename 
-           
-    #         resource = Resources(
-    #             email=email, up_file=filename2, student_id=student_id, Course_Code=Course_Code,
-    #             f_type=f_type, Description=Description
-    #         )
-
-    #         db.session.add(resource)
-    #         db.session.commit()
-    #         up_file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(up_file.filename)))
-    # all_resource = Resources.query.all()
-    # return render_template('Add_resources.html', all_resource=all_resource, filename2=filename2)
-    # return render_template('Add_resources.html')
 
 
         up_file = request.files['up_file']
@@ -86,19 +65,16 @@ def Add_resources():
     return render_template('Add_resources.html', all_resource=all_resource, filename2=filename2)
 
 
-
-
-    return render_template('Add_resources.html')
-# @app.route('/get_file/<int:sno>')
-# def get_file(sno):
-#     resource = Resources.query.get_or_404(sno)
-#     return Response(resource.up_file, content_type="image/png")  
 @app.route('/view')
 def View():
     all_resource=Resources.query.all()
     return render_template('view.html',all_resource=all_resource)
-
-
+@app.route('/community')
+def community():
+    return render_template('community.html')
+@app.route('/Alumni')
+def Alumni():
+    return render_template('Alumni.html')
 @app.route('/get_file/<int:sno>')
 def get_file(sno):
     resource = Resources.query.get_or_404(sno)
@@ -154,13 +130,15 @@ course_codes=[]
 def comment():
     return render_template('comment.html', course_data=zip(course_codes, Serials, comments, ratings))
 
+
+
 @app.route('/submit', methods=['POST'])
 def submit():
     comment = request.form.get('comment')
     rating = request.form.get('rating')
     course_code=request.form.get('course_code')
     Serial=request.form.get('num')
-    print(course_code)
+   
 
     if comment and rating and course_code and Serial:
         comments.append(comment)
@@ -168,9 +146,38 @@ def submit():
         course_codes.append(course_code)
         Serials.append(Serial)
 
-    print(Serials,course_codes)
-
     return redirect(url_for('comment'))
+
+names= []
+emails = []
+c_names=[]
+dess=[]
+
+
+@app.route('/alumni')
+def alumni():
+   
+    return render_template('alumni.html', alumnyy=zip(names, emails, c_names, dess))
+
+@app.route('/submitt', methods=['POST'])
+def submitt():
+    name = request.form.get('name')
+    email = request.form.get('email')
+    cname=request.form.get('cname')
+    info=request.form.get('info')
+   
+    if name and email and cname and info:
+        names.append(name)
+        emails.append(email)
+        c_names.append(cname)
+        dess.append(info)
+  
+
+    return redirect(url_for('alumni'))
+
+
+
+
 
 if __name__ == "__main__":
     with app.app_context():
