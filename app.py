@@ -4,10 +4,33 @@ from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
 from itertools import groupby
+<<<<<<< HEAD
 from model import Resources,app,db
 
+=======
+>>>>>>> 52ac3e415867fb21816c3e03c1659af8f13f5433
 
 
+<<<<<<< HEAD
+=======
+db = SQLAlchemy(app)
+
+app.app_context().push()
+
+class Resources(db.Model):
+    sno = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), nullable=False)
+    student_id = db.Column(db.String(20), nullable=False)
+    Course_Code = db.Column(db.String(10), nullable=False)
+    f_type = db.Column(db.String(10), nullable=False)
+    Description = db.Column(db.Text, nullable=False)
+    up_file=db.Column(db.String(100), nullable=False)
+
+    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+  
+>>>>>>> 52ac3e415867fb21816c3e03c1659af8f13f5433
 @app.route('/')
 def home():
     return render_template('index.html')
