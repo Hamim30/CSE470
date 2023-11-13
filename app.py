@@ -4,8 +4,37 @@ from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
 from itertools import groupby
-from model import Resources,app,db
+from model import Resources,app,db,Comment
 
+
+
+
+
+@app.route('/postt')
+def postt():
+    comments = Comment.query.filter_by(parent_id=None).all()
+    return render_template('postt.html', comments=comments)
+
+@app.route('/add_comment', methods=['POST'])
+def add_comment():
+    text = request.form.get('comment_text')
+    parent_id = request.form.get('parent_id', None)
+
+    new_comment = Comment(text=text, parent_id=parent_id)
+    db.session.add(new_comment)
+    db.session.commit()
+
+    return redirect(url_for('postt'))
+@app.route('/delete_comment/<int:comment_id>', methods=['GET'])
+def delete_comment(comment_id):
+    comment_to_delete = Comment.query.get(comment_id)
+
+    if comment_to_delete:
+        # Delete the comment and its replies
+        db.session.delete(comment_to_delete)
+        db.session.commit()
+
+    return redirect(url_for('postt'))
 
 
 @app.route('/')
