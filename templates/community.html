@@ -93,32 +93,56 @@ welcome {{request.user}}
               <div class="popup" id="popup2">
                   <div class="popup-content">
                       <span class="closeButton" onclick="closePopup(2)">&times;</span>
-                      <form id="form2">
+                      <form method="post" action="/submittt" id="form2" style="text-align: left;">
                           <!-- Add your form fields and content for the second popup here -->
-                          <label for="name">Name:</label>
-                          <input type="text" id="name" name="name">
-                          <br>
-                          <label for="email">Email:</label>
-                          <input type="email" id="email" name="email">
-                          <br>
+                          <div style="display: flex; flex-direction: column; align-items: start;">
+                            <label for="name">Event Name:</label>
+                            <input type="text" id="name" name="name">
+                          </div>
+                          <div style="display: flex; flex-direction: column; align-items: start;">
+                            <label for="">Event venue:</label>
+                            <input type="text" id="venu" name="venu">
+                          </div>
+                          <div style="display: flex; flex-direction: column; align-items: start;">
+                            <label for="edes">Event Description:</label>
+                            <input type="text" id="edes" name="edes">
+                          </div>
+                          <div style="display: flex; flex-direction: column; align-items: start;">
+                            <label for="info">Additional Information or EVENT Link:</label>
+                            <textarea name="info" id="info"></textarea>
+                          </div>
                           <input type="submit" value="Submit">
-                      </form>
+                        </form>
+                        <a href="/event" type="submit" >View all</a>
+                     
                   </div>
               </div>
               <a><img src="/static/pic/intern.png" height="200px" alt="Image" class="image" onclick="openPopup(3)"></a>
               <div class="popup" id="popup3">
                   <div class="popup-content">
                       <span class="closeButton" onclick="closePopup(3)">&times;</span>
-                      <form id="form3">
+                      <form method="post" action="/submitttt" id="form3" style="text-align: left;">
                           <!-- Add your form fields and content for the third popup here -->
-                          <label for="name">Name:</label>
-                          <input type="text" id="name" name="name">
-                          <br>
-                          <label for="email">Email:</label>
-                          <input type="email" id="email" name="email">
-                          <br>
+                          <div style="display: flex; flex-direction: column; align-items: start;">
+                            <label for="name">Company Name:</label>
+                            <input type="text" id="name" name="name">
+                          </div>
+                          <div style="display: flex; flex-direction: column; align-items: start;">
+                            <label for="pos">Position:</label>
+                            <input type="text" id="pos" name="pos">
+                          </div>
+                          <div style="display: flex; flex-direction: column; align-items: start;">
+                            <label for="req">Requiremt:</label>
+                            <input type="text" id="req" name="req">
+                          </div>
+                          <div style="display: flex; flex-direction: column; align-items: start;">
+                            <label for="info">Additional Information or Link:</label>
+                            <textarea name="info" id="info"></textarea>
+                          </div>
                           <input type="submit" value="Submit">
-                      </form>
+                        </form>
+                        <a href="/intern" type="submit" >View all</a>
+                     
                   </div>
               </div>
           </div>

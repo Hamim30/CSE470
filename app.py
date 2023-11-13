@@ -4,33 +4,10 @@ from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
 from itertools import groupby
-<<<<<<< HEAD
 from model import Resources,app,db
 
-=======
->>>>>>> 52ac3e415867fb21816c3e03c1659af8f13f5433
 
 
-<<<<<<< HEAD
-=======
-db = SQLAlchemy(app)
-
-app.app_context().push()
-
-class Resources(db.Model):
-    sno = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), nullable=False)
-    student_id = db.Column(db.String(20), nullable=False)
-    Course_Code = db.Column(db.String(10), nullable=False)
-    f_type = db.Column(db.String(10), nullable=False)
-    Description = db.Column(db.Text, nullable=False)
-    up_file=db.Column(db.String(100), nullable=False)
-
-    date_created = db.Column(db.DateTime, default=datetime.utcnow)
-
-
-  
->>>>>>> 52ac3e415867fb21816c3e03c1659af8f13f5433
 @app.route('/')
 def home():
     return render_template('index.html')
@@ -179,9 +156,62 @@ def submitt():
 
     return redirect(url_for('alumni'))
 
+#Event
+e_names= []
+e_venues = []
+e_des=[]
+e_infos=[]
 
 
+@app.route('/event')
+def event():
+   
+    return render_template('event.html', eventt=zip(e_names,e_venues, e_des, e_infos))
 
+@app.route('/submittt', methods=['POST'])
+def submittt():
+    name = request.form.get('name')
+    venu = request.form.get('venu')
+    edes=request.form.get('edes')
+    info=request.form.get('info')
+   
+    if name and venu and edes and info:
+        e_names.append(name)
+        e_venues.append(venu)
+        e_des.append(edes)
+        e_infos.append(info)
+  
+
+    return redirect(url_for('event'))
+
+
+#Internship
+i_names= []
+positions = []
+requiremments=[]
+i_infos=[]
+
+
+@app.route('/intern')
+def intern():
+   
+    return render_template('intern.html', internn=zip(i_names,positions, requiremments, i_infos))
+
+@app.route('/submitttt', methods=['POST'])
+def submitttt():
+    name = request.form.get('name')
+    pos = request.form.get('pos')
+    req=request.form.get('req')
+    info=request.form.get('info')
+   
+    if name and pos and req and info:
+        i_names.append(name)
+        positions.append(pos)
+        requiremments.append(req)
+        i_infos.append(info)
+  
+
+    return redirect(url_for('intern'))
 
 if __name__ == "__main__":
     with app.app_context():
