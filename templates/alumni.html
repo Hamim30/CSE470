@@ -1,0 +1,157 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock title %}
+welcome {{request.user}}
+{% block body %}
+
+<input type="checkbox" id="openSidebar">
+<label for="openSidebar" class="sidebaricon">
+    <div class="spinner top"></div>
+    <div class="spinner middle"></div>
+    <div class ="spinner bottom"></div>
+</label>
+<div id="sidebar">
+    <ul class="menu">
+
+        <li class="dropdown"><a href="#" > CSE <span>&rsaquo;</span></a>
+            <ul class="coursesidebar">
+                 <a href="/cse1">100 level courses</a>
+                 <a href="/cse2">200 level courses</a>
+                <a href="/cse3">300 level courses</a>
+                <a href="/cse4">400 level courses</a>
+            </ul>
+        
+        </li>
+
+        <li class="dropdown"><a href="#" > MNS <span>&rsaquo;</span></a>
+            <ul class="coursesidebar">
+                 <a href="#">100 level courses</a>
+                 <a href="#">200 level courses</a>
+                
+            </ul>
+        
+        </li>
+        <li class="dropdown"><a href="#" > COD <span>&rsaquo;</span></a>
+            <ul class="coursesidebar">
+                 <a href="#">100 level courses</a>
+                 <a href="#">200 level courses</a>
+                <a href="#">300 level courses</a>
+            </ul>
+        
+        </li>
+        <li class="dropdown"><a href="#" > ELECTIVES <span>&rsaquo;</span></a>
+            <ul class="coursesidebar">
+                 <a href="#">100 level courses</a>
+                 <a href="#">200 level courses</a>
+                <a href="#">300 level courses</a>
+            </ul>
+        
+        </li>
+        <li> <a href="#">Thesis</a></li>
+        <li> <a href="/faculty">Faculty Informations</a></li>
+        <li><a href="\courseinfo">Course Info</a></li>
+        <li> <a href="#">Contact Us</a></li>
+        <li> <a href="https://www.bracu.ac.bd/sites/default/files/academics/Year-planner/Year%20Planner%202023%20Trimester%20-%20Final%20Version-4.pdf">Calendar</a></li>
+    </ul>
+</div>
+
+<div style=" display: flex; justify-content: center; align-items: center; background-color: rgb(233, 245, 250);background-repeat: no-repeat;  height: 100%; padding: 10px 50px;">
+    <img src="{{ url_for('static', filename='pic/brac_logo.gif') }}">
+
+    <style>
+        .popup {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .popup-content {
+            background-color: rgb(233, 245, 250);
+            background-image: url(/static/pic/brac_logo.gif);
+            background-repeat: no-repeat;
+            background-position: center;
+            width: 500px;
+            padding: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            height: 500px;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        }
+
+        .openButton {
+            margin-top: 20px;
+        }
+
+        .closeButton {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            cursor: pointer;
+        }
+
+            /* Define a class for table rows */
+.table-row {
+    background-color: #f0f0f0; /* Set the background color for even rows */
+    padding: 10px; /* Add padding to create separation */
+}
+
+/* Style the odd rows differently for better readability */
+
+
+/* Add hover effect to highlight rows when hovering over them */
+.table-row:hover {
+    background-color: #e0e0e0;}
+    /* Style columns with a vertical divider */
+/* Style columns with a vertical divider */
+.col-divider {
+    border-right: 2px solid #000; /* Add a 2-pixel wide solid border to the right of the cell */
+    padding-right: 10px; /* Add padding to create separation between the content and the border */
+}
+
+/* Increase the thickness of the row borders to make them more visible */
+table, tr {
+    border-bottom: 2px solid #000;
+
+}
+td {
+        white-space: nowrap; /* Prevent text from wrapping */
+        overflow: hidden; /* Hide text that overflows */
+        text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
+    }
+
+
+
+    </style>
+<table>
+    <tr class="table-row">
+        <th class="col-divider">Name</th>
+    <th class="col-divider">E-mail</th>
+    <th class="col-divider">Company Name</th>
+        <th>Information</th>
+    </tr>
+    <tr>
+        <td colspan="4"><hr></td>
+    </tr>
+    {% for name, email, cname, info in alumnyy %}
+        <tr class="table-row">
+            <td>{{ name }}</td>
+            <td>{{ email }}</td>
+            <td>{{ cname }}</td>
+            <td>{{ info }}</td>
+        </tr>
+        <tr>
+            <td colspan="4"><hr></td>
+        </tr>
+    {% endfor %}
+    
+</table>
+    <script src="/static/js/script.js"></script>
+</div>
+
+</body>
+{% endblock body %}
