@@ -77,6 +77,18 @@ welcome {{request.user}}
                           <label for="cname">Company Name:</label>
                           <input type="text" id="cname" name="cname">
                         </div>
+                      
+                          
+                        <div style="display: flex; flex-direction: column; align-items: start;">
+                            <label for="c_type"> Company Origin: </label>
+                            <select  name="c_type" id="c_type">
+                                <option value="Local Company">Local Company</option>
+                                
+                                <option value="Foreign Company">Foreign Company</option>
+                                
+                            </select>
+                            
+                          </div>
                         <div style="display: flex; flex-direction: column; align-items: start;">
                           <label for="info">Additional Information:</label>
                           <textarea name="info" id="info"></textarea>

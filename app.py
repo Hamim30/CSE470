@@ -129,28 +129,32 @@ def submit():
 
     return redirect(url_for('comment'))
 
+
+#alumny
 names= []
 emails = []
 c_names=[]
 dess=[]
-
+c_types=[]
 
 @app.route('/alumni')
 def alumni():
    
-    return render_template('alumni.html', alumnyy=zip(names, emails, c_names, dess))
+    return render_template('alumni.html', alumnyy=zip(names, emails, c_names,c_types, dess))
 
 @app.route('/submitt', methods=['POST'])
 def submitt():
     name = request.form.get('name')
     email = request.form.get('email')
     cname=request.form.get('cname')
+    c_type=request.form.get('c_type')
     info=request.form.get('info')
    
-    if name and email and cname and info:
+    if name and email and cname and c_type and info:
         names.append(name)
         emails.append(email)
         c_names.append(cname)
+        c_types.append(c_type)
         dess.append(info)
   
 
