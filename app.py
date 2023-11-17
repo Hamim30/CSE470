@@ -36,8 +36,10 @@ def delete_comment(comment_id):
 
     return redirect(url_for('postt'))
 
-
 @app.route('/')
+def homme():
+    return render_template('index.html')
+@app.route('/index')
 def home():
     return render_template('index.html')
 @app.route('/courseinfo')
@@ -82,6 +84,10 @@ def View():
 @app.route('/community')
 def community():
     return render_template('community.html')
+
+@app.route('/faculty')
+def faculty():
+    return render_template('faculty.html')
 @app.route('/Alumni')
 def Alumni():
     return render_template('Alumni.html')
