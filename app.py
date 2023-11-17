@@ -4,30 +4,40 @@ from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
 from itertools import groupby
-
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///resources.db"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['UPLOAD_FOLDER'] = 'uploads'
-
-db = SQLAlchemy(app)
-
-app.app_context().push()
-
-class Resources(db.Model):
-    sno = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), nullable=False)
-    student_id = db.Column(db.String(20), nullable=False)
-    Course_Code = db.Column(db.String(10), nullable=False)
-    f_type = db.Column(db.String(10), nullable=False)
-    Description = db.Column(db.Text, nullable=False)
-    up_file=db.Column(db.String(100), nullable=False)
-
-    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+from model import Resources,app,db,Comment
 
 
-  
-@app.route('/')
+
+
+
+@app.route('/postt')
+def postt():
+    comments = Comment.query.filter_by(parent_id=None).all()
+    return render_template('postt.html', comments=comments)
+
+@app.route('/add_comment', methods=['POST'])
+def add_comment():
+    text = request.form.get('comment_text')
+    parent_id = request.form.get('parent_id', None)
+
+    new_comment = Comment(text=text, parent_id=parent_id)
+    db.session.add(new_comment)
+    db.session.commit()
+
+    return redirect(url_for('postt'))
+@app.route('/delete_comment/<int:comment_id>', methods=['GET'])
+def delete_comment(comment_id):
+    comment_to_delete = Comment.query.get(comment_id)
+
+    if comment_to_delete:
+        # Delete the comment and its replies
+        db.session.delete(comment_to_delete)
+        db.session.commit()
+
+    return redirect(url_for('postt'))
+
+
+@app.route('/index')
 def home():
     return render_template('index.html')
 @app.route('/courseinfo')
@@ -72,6 +82,10 @@ def View():
 @app.route('/community')
 def community():
     return render_template('community.html')
+
+@app.route('/faculty')
+def faculty():
+    return render_template('faculty.html')
 @app.route('/Alumni')
 def Alumni():
     return render_template('Alumni.html')
@@ -148,36 +162,93 @@ def submit():
 
     return redirect(url_for('comment'))
 
+
+#alumny
 names= []
 emails = []
 c_names=[]
 dess=[]
-
+c_types=[]
 
 @app.route('/alumni')
 def alumni():
    
-    return render_template('alumni.html', alumnyy=zip(names, emails, c_names, dess))
+    return render_template('alumni.html', alumnyy=zip(names, emails, c_names,c_types, dess))
 
 @app.route('/submitt', methods=['POST'])
 def submitt():
     name = request.form.get('name')
     email = request.form.get('email')
     cname=request.form.get('cname')
+    c_type=request.form.get('c_type')
     info=request.form.get('info')
    
-    if name and email and cname and info:
+    if name and email and cname and c_type and info:
         names.append(name)
         emails.append(email)
         c_names.append(cname)
+        c_types.append(c_type)
         dess.append(info)
   
 
     return redirect(url_for('alumni'))
 
+#Event
+e_names= []
+e_venues = []
+e_des=[]
+e_infos=[]
 
 
+@app.route('/event')
+def event():
+   
+    return render_template('event.html', eventt=zip(e_names,e_venues, e_des, e_infos))
 
+@app.route('/submittt', methods=['POST'])
+def submittt():
+    name = request.form.get('name')
+    venu = request.form.get('venu')
+    edes=request.form.get('edes')
+    info=request.form.get('info')
+   
+    if name and venu and edes and info:
+        e_names.append(name)
+        e_venues.append(venu)
+        e_des.append(edes)
+        e_infos.append(info)
+  
+
+    return redirect(url_for('event'))
+
+
+#Internship
+i_names= []
+positions = []
+requiremments=[]
+i_infos=[]
+
+
+@app.route('/intern')
+def intern():
+   
+    return render_template('intern.html', internn=zip(i_names,positions, requiremments, i_infos))
+
+@app.route('/submitttt', methods=['POST'])
+def submitttt():
+    name = request.form.get('name')
+    pos = request.form.get('pos')
+    req=request.form.get('req')
+    info=request.form.get('info')
+   
+    if name and pos and req and info:
+        i_names.append(name)
+        positions.append(pos)
+        requiremments.append(req)
+        i_infos.append(info)
+  
+
+    return redirect(url_for('intern'))
 
 if __name__ == "__main__":
     with app.app_context():

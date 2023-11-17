@@ -46,9 +46,9 @@ welcome {{request.user}}
             </ul>
         
         </li>
-        <li> <a href="#">Thesis</a></li>
+        <li> <a href="/postt">Thesis</a></li>
         <li> <a href="/faculty">Faculty Informations</a></li>
-        <li><a href="\courseinfo">Course Info</a></li>
+        <li><a href="/courseinfo">Course Info</a></li>
         <li> <a href="#">Contact Us</a></li>
         <li> <a href="https://www.bracu.ac.bd/sites/default/files/academics/Year-planner/Year%20Planner%202023%20Trimester%20-%20Final%20Version-4.pdf">Calendar</a></li>
     </ul>
@@ -132,16 +132,18 @@ td {
         <th class="col-divider">Name</th>
     <th class="col-divider">E-mail</th>
     <th class="col-divider">Company Name</th>
+    <th class="col-divider">Company origin</th>
         <th>Information</th>
     </tr>
     <tr>
         <td colspan="4"><hr></td>
     </tr>
-    {% for name, email, cname, info in alumnyy %}
+    {% for name, email, cname, c_type, info in alumnyy %}
         <tr class="table-row">
             <td>{{ name }}</td>
             <td>{{ email }}</td>
             <td>{{ cname }}</td>
+            <td>{{ c_type }}</td>
             <td>{{ info }}</td>
         </tr>
         <tr>
