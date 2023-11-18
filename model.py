@@ -24,6 +24,17 @@ class Comment(db.Model):
     parent_id = db.Column(db.Integer, db.ForeignKey('comment.id'))
     replies = db.relationship('Comment', backref=db.backref('parent', remote_side=[id]))
 
+class Faculty(db.Model):
+    sno = db.Column(db.Integer, primary_key=True)
+    full_name = db.Column(db.String(100), nullable=False)
+    initial = db.Column(db.String(10), nullable=False)
+    email = db.Column(db.String(120), nullable=False)
+    thesis_supervision = db.Column(db.String(10), nullable=False)
+    research_interest = db.Column(db.String(100), nullable=False)
+    routine = db.Column(db.LargeBinary)
+    
+
+
 if __name__ == '__main__':
     with app.app_context():
 
