@@ -55,7 +55,16 @@ def faculty_form():
         email = request.form['email']
         thesis_supervision = request.form['thesis_supervision']
         research_interest = request.form['research_interest']
-        routine = request.files['routine'].read()  # Read image file as binary data
+        #routine = request.files['routine'].read()  # Read image file as binary data
+        routine_file = request.files['routine']
+
+        #routine = request.files['routine']
+        #filename = secure_filename(routine.filename) 
+
+        
+        filename = secure_filename(routine_file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        routine_file.save(file_path)
 
         new_faculty = Faculty(
             full_name=full_name,
@@ -63,8 +72,12 @@ def faculty_form():
             email=email,
             thesis_supervision=thesis_supervision,
             research_interest=research_interest,
-            routine=routine
-        )
+            routine=filename  # Store the file name in the database
+        )   
+       
+      
+
+        
         
         db.session.add(new_faculty)
         db.session.commit()
@@ -72,7 +85,20 @@ def faculty_form():
     
     return render_template('faculty_form.html')
 
+
+@app.route('/faculty')
+def faculty():
+    faculty = Faculty.query.all()
+    return render_template('faculty.html', faculty=faculty)
+
+@app.route('/faculty_description/<int:sno>')
+def delete(sno):
+    faculty = Faculty.query.filter_by(sno=sno).first()
     
+    
+    return render_template('faculty_description.html', faculty=faculty)
+
+
 
 @app.route('/Add_resources', methods=['GET', 'POST'])
 def Add_resources():
@@ -112,9 +138,7 @@ def View():
 def community():
     return render_template('community.html')
 
-@app.route('/faculty')
-def faculty():
-    return render_template('faculty.html')
+
 @app.route('/Alumni')
 def Alumni():
     return render_template('Alumni.html')
