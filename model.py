@@ -31,7 +31,7 @@ class Faculty(db.Model):
     email = db.Column(db.String(120), nullable=False)
     thesis_supervision = db.Column(db.String(10), nullable=False)
     research_interest = db.Column(db.String(100), nullable=False)
-    routine = db.Column(db.LargeBinary)
+    routine = db.Column(db.String(255), nullable=True)
 
     def __repr__(self) -> str:
         return f"{self.sno}, Name: {self.full_name}, Email: {self.email}, Interest in Supervising: {self.thesis_supervision}, Research Interest: {self.research_interest}"
