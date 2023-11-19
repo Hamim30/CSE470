@@ -4,7 +4,7 @@ from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
 from itertools import groupby
-from model import Resources,app,db,Comment
+from model import Resources,app,db,Comment,Faculty
 
 
 
@@ -46,6 +46,33 @@ def home():
 def cinfo():
     return render_template('courseinfo.html')
 
+
+@app.route('/faculty_form', methods=['GET', 'POST'])
+def faculty_form():
+    if request.method == 'POST':
+        full_name = request.form['full_name']
+        initial = request.form['initial']
+        email = request.form['email']
+        thesis_supervision = request.form['thesis_supervision']
+        research_interest = request.form['research_interest']
+        routine = request.files['routine'].read()  # Read image file as binary data
+
+        new_faculty = Faculty(
+            full_name=full_name,
+            initial=initial,
+            email=email,
+            thesis_supervision=thesis_supervision,
+            research_interest=research_interest,
+            routine=routine
+        )
+        
+        db.session.add(new_faculty)
+        db.session.commit()
+
+    
+    return render_template('faculty_form.html')
+
+    
 
 @app.route('/Add_resources', methods=['GET', 'POST'])
 def Add_resources():
