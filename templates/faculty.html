@@ -6,16 +6,17 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
     <div class="container">
+        {% for f in faculty %}
         <!-- Faculty Containers -->
         <div class="faculty-container">
             <div class="poster">
-                <span class="initial">MSI</span>
+                <span class="initial">{{f.initial}}</span>
             </div>
             <div class="details">
-                <a href="#" class="show-details">Show Details</a>
+                <a href="/faculty_description/{{f.sno}}" class="show-details">Show Details</a>
             </div>
         </div>
-
+        {% endfor %}
        
 
 
