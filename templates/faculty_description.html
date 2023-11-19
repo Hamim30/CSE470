@@ -34,7 +34,7 @@
                 </div>
                 <div class="text-center mt-4">
                     <!-- Replace 'filename.jpg' with your image file name and the correct path -->
-                    <img src="https://images.pexels.com/photos/45201/kitty-cat-kitten-pet-45201.jpeg?auto=compress&cs=tinysrgb&dpr=1&w=500" alt="Faculty Image" class="img-fluid">
+                    <img src="{{ url_for('serve_file', filename=faculty.routine) }}" alt="Faculty Image" class="img-fluid">
                 </div>
             </div>
         </div>
