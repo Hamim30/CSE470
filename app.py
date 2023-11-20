@@ -9,7 +9,6 @@ from model import Resources,app,db,Comment,Faculty
 
 
 
-
 @app.route('/postt')
 def postt():
     comments = Comment.query.filter_by(parent_id=None).all()
