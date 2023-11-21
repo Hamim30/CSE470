@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block title %} Home {% endblock title %}
+welcome {{request.user}}
+{% block body %}
+
+
+
+
+<div
+    style=" display: flex; justify-content: center; align-items: center; background-color: rgb(233, 245, 250);background-repeat: no-repeat;  height: 100%; padding: 10px 50px;">
+    <img src="{{ url_for('static', filename='pic/brac_logo.gif') }}">
+
+    <style>
+        .box {
+            position: absolute;
+            top: 30%;
+            left: 15%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 150px;
+            padding: 50px;
+            box-sizing: border-box;
+            background: rgba(78, 134, 108, 0.5);
+            border-radius: 24px;
+
+        }
+
+        .com {
+            position: absolute;
+            top: 50%;
+            right: 40%;
+            transform: translate(-50%, -50%);
+            width: 300px;
+            height: 350px;
+            padding: 50px;
+            box-sizing: border-box;
+            background: rgba(78, 134, 108, 0.5);
+            border-radius: 24px;
+
+        }
+
+        .dis {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin-bottom: 16px;
+            box-sizing: border-box;
+            border: none;
+            border-bottom: 1px solid #fae7e7;
+            /* Single line */
+            background-color: transparent;
+            /* Transparent background */
+            outline: none;
+            /* Remove input outline */
+        }
+
+        /* Optionally, you can add a placeholder style */
+        .dis::placeholder {
+            color: #ccc;
+        }
+    </style>
+    <div class="box">
+        <form action="{{ url_for('add_comment') }}" method="post">
+            <label for="comment_text">Add Comment:</label>
+            <input type="text" class='dis' name="comment_text" required>
+            <input type="submit" value="Submit">
+
+        </form>
+    </div>
+
+
+    <ul class="com">
+        {% for comment in comments %}
+        <li>
+            {{ comment.text }}
+
+
+            <form action="{{ url_for('delete_comment', comment_id=comment.id) }}" method="get"
+                style="display:inline-block;">
+                <button type="submit">Delete</button>
+            </form>
+
+            <form action="{{ url_for('add_comment') }}" method="post" style="display:inline-block;">
+                <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                <input type="text" class='dis' name="comment_text" placeholder="Reply..." required>
+                <button type="submit">Reply</button>
+            </form>
+            {% if comment.replies %}
+            <ul>
+                {% for reply in comment.replies %}
+                <li>
+                    {{ reply.text }}
+
+                    <!-- Add delete form for replies -->
+
+                    <form action="{{ url_for('delete_comment', comment_id=reply.id) }}" method="get"
+                        style="display:inline-block;">
+                        <button type="submit">Delete</button>
+                    </form>
+
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock body %}

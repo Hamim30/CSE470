@@ -1,53 +1,53 @@
 <!-- faculty_form.html -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Faculty Details Form</title>
-    <!-- Bootstrap CSS link -->
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <div class="container">
-        <form action="/faculty_form" method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
+{% extends 'base.html' %}
+{% block title %} Home {% endblock title %}
+welcome {{request.user}}
+{% block body %}
+
+<div class="d-flex justify-content-center align-items-center"
+    style="background-color: rgb(233, 245, 250);background-repeat: no-repeat;  height: 100%; padding: 10px 50px;">
+    <img src="{{ url_for('static', filename='pic/brac_logo.gif') }}">
+    <form action="/faculty_form" method="POST" enctype="multipart/form-data">
+        <div class="form_box">
+        <h4 class="text-center">Add Faculty Information</h1>
+
+            <div class="mb-1">
                 <label for="full_name" class="form-label">Full Name:</label>
                 <input type="text" class="form-control" id="full_name" name="full_name" required>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-1">
                 <label for="initial" class="form-label">Initial:</label>
                 <input type="text" class="form-control" id="initial" name="initial" required>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-1">
                 <label for="email" class="form-label">Email address:</label>
                 <input type="email" class="form-control" id="email" name="email" aria-describedby="emailHelp" required>
                 <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-1">
                 <label for="thesis_supervision" class="form-label">Thesis Supervision:</label>
                 <input type="text" class="form-control" id="thesis_supervision" name="thesis_supervision" required>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-1">
                 <label for="research_interest" class="form-label">Research Interest:</label>
                 <input type="text" class="form-control" id="research_interest" name="research_interest" required>
             </div>
 
-            <div class="mb-3">
+            <div class="mb-1">
                 <label for="routine" class="form-label">Routine (Image):</label>
                 <input type="file" class="form-control" id="routine" name="routine" required>
             </div>
 
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </div>
+            <button type="submit" class="btn btn-primary ">Submit</button>
+        </div>
+    </form>
+</div>
 
-    <!-- Bootstrap JS and jQuery links (for proper Bootstrap functionality) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+
+
+
+{% endblock body %}

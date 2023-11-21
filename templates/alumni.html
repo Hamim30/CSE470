@@ -3,56 +3,6 @@
 welcome {{request.user}}
 {% block body %}
 
-<input type="checkbox" id="openSidebar">
-<label for="openSidebar" class="sidebaricon">
-    <div class="spinner top"></div>
-    <div class="spinner middle"></div>
-    <div class ="spinner bottom"></div>
-</label>
-<div id="sidebar">
-    <ul class="menu">
-
-        <li class="dropdown"><a href="#" > CSE <span>&rsaquo;</span></a>
-            <ul class="coursesidebar">
-                 <a href="/cse1">100 level courses</a>
-                 <a href="/cse2">200 level courses</a>
-                <a href="/cse3">300 level courses</a>
-                <a href="/cse4">400 level courses</a>
-            </ul>
-        
-        </li>
-
-        <li class="dropdown"><a href="#" > MNS <span>&rsaquo;</span></a>
-            <ul class="coursesidebar">
-                 <a href="#">100 level courses</a>
-                 <a href="#">200 level courses</a>
-                
-            </ul>
-        
-        </li>
-        <li class="dropdown"><a href="#" > COD <span>&rsaquo;</span></a>
-            <ul class="coursesidebar">
-                 <a href="#">100 level courses</a>
-                 <a href="#">200 level courses</a>
-                <a href="#">300 level courses</a>
-            </ul>
-        
-        </li>
-        <li class="dropdown"><a href="#" > ELECTIVES <span>&rsaquo;</span></a>
-            <ul class="coursesidebar">
-                 <a href="#">100 level courses</a>
-                 <a href="#">200 level courses</a>
-                <a href="#">300 level courses</a>
-            </ul>
-        
-        </li>
-        <li> <a href="/postt">Thesis</a></li>
-        <li> <a href="/faculty">Faculty Informations</a></li>
-        <li><a href="/courseinfo">Course Info</a></li>
-        <li> <a href="#">Contact Us</a></li>
-        <li> <a href="https://www.bracu.ac.bd/sites/default/files/academics/Year-planner/Year%20Planner%202023%20Trimester%20-%20Final%20Version-4.pdf">Calendar</a></li>
-    </ul>
-</div>
 
 <div style=" display: flex; justify-content: center; align-items: center; background-color: rgb(233, 245, 250);background-repeat: no-repeat;  height: 100%; padding: 10px 50px;">
     <img src="{{ url_for('static', filename='pic/brac_logo.gif') }}">
