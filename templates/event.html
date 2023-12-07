@@ -137,16 +137,13 @@ td {
     <tr>
         <td colspan="4"><hr></td>
     </tr>
-    {% for name, venu, edes, info in eventt %}
-        <tr class="table-row">
-            <td>{{ name }}</td>
-            <td>{{ venu }}</td>
-            <td>{{ edes }}</td>
-            <td>{{ info }}</td>
-        </tr>
-        <tr>
-            <td colspan="4"><hr></td>
-        </tr>
+    {% for event in events %}
+                <tr class="table-row">
+                    <td>{{ event.name }}</td>
+                    <td>{{ event.venue }}</td>
+                    <td>{{ event.description }}</td>
+                    <td>{{ event.info }}</td>
+                </tr>
     {% endfor %}
     
 </table>

@@ -1,0 +1,169 @@
+{% extends 'base.html' %}
+{% block title %} Faculty Description {% endblock title %}
+{% block body %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+<input type="checkbox" id="openSidebar">
+<label for="openSidebar" class="sidebaricon">
+    <div class="spinner top"></div>
+    <div class="spinner middle"></div>
+    <div class="spinner bottom"></div>
+</label>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<body>
+<div id="sidebar">
+    <ul class="menu">
+
+        <li class="dropdown"><a href="#">CSE <span>&rsaquo;</span></a>
+            <ul class="coursesidebar">
+                <a href="/cse1">100 level courses</a>
+                <a href="/cse2">200 level courses</a>
+                <a href="/cse3">300 level courses</a>
+                <a href="/cse4">400 level courses</a>
+            </ul>
+        </li>
+
+        <li class="dropdown"><a href="#">MNS <span>&rsaquo;</span></a>
+            <ul class="coursesidebar">
+                <a href="#">100 level courses</a>
+                <a href="#">200 level courses</a>
+                <a href="#">300 level courses</a>
+            </ul>
+
+        </li>
+        <li class="dropdown"><a href="#">COD <span>&rsaquo;</span></a>
+            <ul class="coursesidebar">
+                <a href="#">100 level courses</a>
+                <a href="#">200 level courses</a>
+                <a href="#">300 level courses</a>
+            </ul>
+
+        </li>
+        <li class="dropdown"><a href="#">ELECTIVES <span>&rsaquo;</span></a>
+            <ul class="coursesidebar">
+                <a href="#">100 level courses</a>
+                <a href="#">200 level courses</a>
+                <a href="#">300 level courses</a>
+            </ul>
+
+        </li>
+        <li> <a href="/postt">Thesis</a></li>
+        <li><a href="/courseinfo">Course Info</a></li>
+        <li> <a href="#">Contact Us</a></li>
+        <li> <a href="https://www.bracu.ac.bd/sites/default/files/academics/Year-planner/Year%20Planner%202023%20Trimester%20-%20Final%20Version-4.pdf">Calendar</a></li>
+    </ul>
+</div>
+
+<img src="static/pic/study" alt="">
+<div style=" display: flex; justify-content: center; align-items: center; background-color: rgb(233, 245, 250);background-repeat: no-repeat;  height: 100%; padding: 10px 50px;">
+    <img src="{{ url_for('static', filename='pic/brac_logo.gif') }}">
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+
+    <div class="container mt-5 space_fac" >
+        <h2 class="text-center">Faculty Details</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th scope="row" style="width: 30%;">Full Name:</th>
+                                <td>{{ faculty.full_name }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Initial:</th>
+                                <td>{{ faculty.initial }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Email:</th>
+                                <td>{{ faculty.email }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Thesis Supervision Availability:</th>
+                                <td>{{ faculty.thesis_supervision }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Research Interest:</th>
+                                <td>{{ faculty.research_interest }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#imageModal">
+                    See Routine
+                </button>
+                <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="imageModalLabel">Faculty Image</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <img src="{{ url_for('serve_file', filename=faculty.routine) }}" alt="Faculty Image" class="img-fluid">
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                
+                <!-- Form for sending email -->
+                <div class="mt-4">
+                    <button id="showEmailFormBtn" class="btn btn-primary" data-toggle="modal" data-target="#emailModal">Send Email to {{ faculty.full_name }}</button>
+                </div>
+                
+                <!-- Email Modal -->
+                <div class="modal fade" id="emailModal" tabindex="-1" role="dialog" aria-labelledby="emailModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="emailModalLabel">Send Email to {{ faculty.full_name }}</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="{{ url_for('delete', sno=faculty.sno) }}" method="post">
+                                    <div class="form-group">
+                                        <label for="sender">Your Email:</label>
+                                        <input type="email" class="form-control" id="sender" name="sender" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="subject">Subject:</label>
+                                        <input type="text" class="form-control" id="subject" name="subject" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="body">Message:</label>
+                                        <textarea class="form-control" id="body" name="body" rows="5" required></textarea>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Send Email</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+               
+                
+                <!-- End of Form -->
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<style>
+    .space_fac{
+        padding-top: 100px;
+    }
+    body{
+        background-color: rgb(233, 245, 250);
+    }
+</style>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+{% endblock body %}

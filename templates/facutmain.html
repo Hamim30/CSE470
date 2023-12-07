@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% block title %} Faculty Description {% endblock title %}
+{% block body %}
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center">Faculty Details</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th scope="row" style="width: 30%;">Full Name:</th>
+                                <td>{{ faculty.full_name }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Initial:</th>
+                                <td>{{ faculty.initial }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Email:</th>
+                                <td>{{ faculty.email }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Thesis Supervision Availability:</th>
+                                <td>{{ faculty.thesis_supervision }}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Research Interest:</th>
+                                <td>{{ faculty.research_interest }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                
+                <div class="text-center mt-4">
+                    <!-- Replace 'filename.jpg' with your image file name and the correct path -->
+                    <img src="{{ url_for('serve_file', filename=faculty.routine) }}" alt="Faculty Image" class="img-fluid" height="600px" width="500px">
+                </div>
+
+                <!-- Form for sending email -->
+                <div class="mt-4">
+                    <h3 class="text-center">Send Email to Faculty</h3>
+                    <form action="{{ url_for('delete', sno=faculty.sno) }}" method="post">
+                        <div class="form-group">
+                            <label for="sender">Your Email:</label>
+                            <input type="email" class="form-control" id="sender" name="sender" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject:</label>
+                            <input type="text" class="form-control" id="subject" name="subject" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="body">Message:</label>
+                            <textarea class="form-control" id="body" name="body" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Email</button>
+                    </form>
+                </div>
+                <!-- End of Form -->
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock body %}

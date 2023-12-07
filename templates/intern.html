@@ -137,14 +137,13 @@ td {
     <tr>
         <td colspan="4"><hr></td>
     </tr>
-    {% for name, pos, req, info in internn %}
-        <tr class="table-row">
-            <td>{{ name }}</td>
-            <td>{{ pos }}</td>
-            <td>{{ req }}</td>
-            <td>{{ info }}</td>
-        </tr>
-        <tr>
+    {% for intern in internn %}
+    <tr class="table-row">
+        <td>{{ intern.name }}</td>
+        <td>{{ intern.position }}</td>
+        <td>{{ intern.requirements }}</td>
+        <td>{{ intern.info }}</td>
+    </tr>
             <td colspan="4"><hr></td>
         </tr>
     {% endfor %}

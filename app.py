@@ -4,11 +4,49 @@ from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
 from itertools import groupby
-from model import Resources,app,db,Comment
+from model import Resources,app,db,Comment,Faculty,Event,Internship
+from flask_mail import Mail, Message
+from dotenv import load_dotenv
 
 
 
 
+
+load_dotenv('.env.local') #I might hide it because of security issues
+
+#create a .env.local named file
+# Inside .env file
+# MAIL_SERVER=smtp.example.com
+# MAIL_PORT=587
+# MAIL_USERNAME=your_email@example.com
+# MAIL_PASSWORD=your_password
+# MAIL_USE_TLS=Trues
+# MAIL_USE_SSL=False
+
+#Follow THis Instructions for Creating Password to access from mail
+# Create & use app passwords
+# Important: To create an app password, you need 2-Step Verification on your Google Account.
+
+# If you use 2-Step-Verification and get a "password incorrect" error when you sign in, you can try to use an app password.
+
+# Go to your Google Account.
+# Select Security.
+# Under "Signing in to Google," select 2-Step Verification.
+# At the bottom of the page, select App passwords.
+# Enter a name that helps you remember where you’ll use the app password.
+# Select Generate.
+# To enter the app password, follow the instructions on your screen. The app password is the 16-character code that generates on your device.
+# Select Done.
+
+
+
+app.config['MAIL_SERVER'] = os.getenv('MAIL_SERVER')
+app.config['MAIL_PORT'] = os.getenv('MAIL_PORT')
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
+app.config['MAIL_USE_TLS'] = os.getenv('MAIL_USE_TLS') == 'True'
+app.config['MAIL_USE_SSL'] = os.getenv('MAIL_USE_SSL') == 'True'
+mail = Mail(app)
 
 @app.route('/postt')
 def postt():
@@ -36,7 +74,9 @@ def delete_comment(comment_id):
 
     return redirect(url_for('postt'))
 
-
+@app.route('/')
+def homme():
+    return render_template('index.html')
 @app.route('/index')
 def home():
     return render_template('index.html')
@@ -44,6 +84,82 @@ def home():
 def cinfo():
     return render_template('courseinfo.html')
 
+
+#Faculty Section Started
+@app.route('/faculty_form', methods=['GET', 'POST'])
+def faculty_form():
+    if request.method == 'POST':
+        full_name = request.form['full_name']
+        initial = request.form['initial']
+        email = request.form['email']
+        thesis_supervision = request.form['thesis_supervision']
+        research_interest = request.form['research_interest']
+        #routine = request.files['routine'].read()  # Read image file as binary data
+        routine_file = request.files['routine']
+
+        #routine = request.files['routine']
+        #filename = secure_filename(routine.filename) 
+
+        
+        filename = secure_filename(routine_file.filename)
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        routine_file.save(file_path)
+
+        new_faculty = Faculty(
+            full_name=full_name,
+            initial=initial,
+            email=email,
+            thesis_supervision=thesis_supervision,
+            research_interest=research_interest,
+            routine=filename  # Store the file name in the database
+        )   
+       
+      
+
+        
+        
+        db.session.add(new_faculty)
+        db.session.commit()
+
+    
+    return render_template('faculty_form.html')
+
+
+@app.route('/faculty')
+def faculty():
+    faculty = Faculty.query.all()
+    return render_template('faculty.html', faculty=faculty)
+
+@app.route('/faculty_description/<int:sno>', methods=['GET', 'POST'])
+def delete(sno):
+    faculty = Faculty.query.filter_by(sno=sno).first()
+    faculty_email= faculty.email 
+    print(faculty_email)
+    if request.method == 'POST':
+        sender = request.form['sender']
+        subject = request.form['subject']
+        body = request.form['body']
+        print(sender)
+        print(subject) 
+        print(body)
+        # Create a message object
+        message = Message(subject=subject,
+                          sender=sender,
+                          recipients=[faculty_email],
+                          body=body)
+
+        try:
+    # Send the email
+            mail.send(message)
+            return 'Email sent successfully!'
+        except Exception as e:
+            app.logger.error(f"Failed to send email: {str(e)}")
+            return 'Failed to send email. Please check logs for more details.'
+
+    
+    return render_template('faculty_description.html', faculty=faculty)
+
+#faculty Section Ended
 
 @app.route('/Add_resources', methods=['GET', 'POST'])
 def Add_resources():
@@ -83,9 +199,7 @@ def View():
 def community():
     return render_template('community.html')
 
-@app.route('/faculty')
-def faculty():
-    return render_template('faculty.html')
+
 @app.route('/Alumni')
 def Alumni():
     return render_template('Alumni.html')
@@ -194,59 +308,50 @@ def submitt():
     return redirect(url_for('alumni'))
 
 #Event
-e_names= []
-e_venues = []
-e_des=[]
-e_infos=[]
-
+events = []
 
 @app.route('/event')
 def event():
-   
-    return render_template('event.html', eventt=zip(e_names,e_venues, e_des, e_infos))
+    events_from_db = Event.query.all()
+    return render_template('event.html', events=events_from_db)
 
 @app.route('/submittt', methods=['POST'])
 def submittt():
     name = request.form.get('name')
-    venu = request.form.get('venu')
-    edes=request.form.get('edes')
-    info=request.form.get('info')
-   
-    if name and venu and edes and info:
-        e_names.append(name)
-        e_venues.append(venu)
-        e_des.append(edes)
-        e_infos.append(info)
-  
+    venue = request.form.get('venu')
+    description = request.form.get('edes')
+    info = request.form.get('info')
+
+    if name and venue and description and info:
+        # Save the event to the database
+        event = Event(name=name, venue=venue, description=description, info=info)
+        db.session.add(event)
+        db.session.commit()
 
     return redirect(url_for('event'))
 
 
-#Internship
-i_names= []
-positions = []
-requiremments=[]
-i_infos=[]
 
+#Internship
+interns = []
 
 @app.route('/intern')
 def intern():
-   
-    return render_template('intern.html', internn=zip(i_names,positions, requiremments, i_infos))
+    interns_from_db = Internship.query.all()
+    return render_template('intern.html', internn=interns_from_db)
 
 @app.route('/submitttt', methods=['POST'])
 def submitttt():
     name = request.form.get('name')
     pos = request.form.get('pos')
-    req=request.form.get('req')
-    info=request.form.get('info')
-   
+    req = request.form.get('req')
+    info = request.form.get('info')
+
     if name and pos and req and info:
-        i_names.append(name)
-        positions.append(pos)
-        requiremments.append(req)
-        i_infos.append(info)
-  
+        # Save the internship to the database
+        intern = Internship(name=name, position=pos, requirements=req, info=info)
+        db.session.add(intern)
+        db.session.commit()
 
     return redirect(url_for('intern'))
 
