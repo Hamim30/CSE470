@@ -4,15 +4,12 @@ from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
 from itertools import groupby
-from model import Resources,app,db,Comment,Faculty,Event,Internship
+from model import Resources,app,db,Comment,Faculty,Event,Internship,Conference
 from flask_mail import Mail, Message
-from dotenv import load_dotenv
 
 
 
 
-
-load_dotenv('.env.local') #I might hide it because of security issues
 
 #create a .env.local named file
 # Inside .env file
@@ -88,6 +85,7 @@ def cinfo():
 #Faculty Section Started
 @app.route('/faculty_form', methods=['GET', 'POST'])
 def faculty_form():
+    
     if request.method == 'POST':
         full_name = request.form['full_name']
         initial = request.form['initial']
@@ -165,7 +163,7 @@ def delete(sno):
 def Add_resources():
     filename2 = None
     if request.method == "POST":
-        Course_Code = request.form['Course_Code']
+        Course_Code = request.form['Course_Code'].upper()
         email = request.form['email']
         student_id = request.form['student_id']
         f_type = request.form['f_type']
@@ -247,6 +245,45 @@ def cse1():
         grouped_resources[course_code] = list(resources)
     
     return render_template('cse1.html', grouped_resources=grouped_resources)
+
+
+@app.route('/cse2')
+def cse2():
+    all_resource=Resources.query.filter(Resources.Course_Code.like('cse2%')).all()
+    grouped_resources = {}
+    
+    # Group resources by course code
+    all_resource.sort(key=lambda x: x.Course_Code)
+    for course_code, resources in groupby(all_resource, key=lambda x: x.Course_Code):
+        grouped_resources[course_code] = list(resources)
+    
+    return render_template('cse2.html', grouped_resources=grouped_resources)
+
+@app.route('/cse3')
+def cse3():
+    all_resource=Resources.query.filter(Resources.Course_Code.like('cse3%')).all()
+    grouped_resources = {}
+    
+    # Group resources by course code
+    all_resource.sort(key=lambda x: x.Course_Code)
+    for course_code, resources in groupby(all_resource, key=lambda x: x.Course_Code):
+        grouped_resources[course_code] = list(resources)
+    
+    return render_template('cse3.html', grouped_resources=grouped_resources)
+
+@app.route('/cse4')
+def cse4():
+    all_resource=Resources.query.filter(Resources.Course_Code.like('cse4%')).all()
+    grouped_resources = {}
+    
+    # Group resources by course code
+    all_resource.sort(key=lambda x: x.Course_Code)
+    for course_code, resources in groupby(all_resource, key=lambda x: x.Course_Code):
+        grouped_resources[course_code] = list(resources)
+    
+    return render_template('cse4.html', grouped_resources=grouped_resources)
+
+
 
 comments = []
 ratings = []
@@ -354,7 +391,54 @@ def submitttt():
         db.session.commit()
 
     return redirect(url_for('intern'))
+#conference
+conferences = []
 
+@app.route('/conference')
+def conference():
+    conferences_from_db = Conference.query.all()
+    return render_template('conference.html', conferences=conferences_from_db)
+
+@app.route('/submittttt', methods=['POST'])
+def submittttt():
+    name = request.form.get('name')
+    venue = request.form.get('venu')
+    description = request.form.get('edes')
+    info = request.form.get('info')
+
+    if name and venue and description and info:
+        # Save the conference to the database
+        new_conference = Conference(name=name, venue=venue, description=description, info=info)
+        db.session.add(new_conference)
+        db.session.commit()
+
+    return redirect(url_for('conference'))
+
+@app.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('query', '')
+
+    # Search in the 'Faculty' model
+    faculty_results = Faculty.query.filter(Faculty.initial.ilike(f'%{query}%')).all()
+
+    if faculty_results:
+        return render_template('search2.html', data=faculty_results)
+
+    # Search in the 'Resources' model
+    course_list = Resources.query.filter(
+        (Resources.Course_Code.ilike(f'%{query}%'))
+        | (Resources.Description.ilike(f'%{query}%'))
+    ).all()
+
+    # Grouping the results by course
+    grouped_results = {}
+    for resource in course_list:
+        if resource.Course_Code in grouped_results:
+            grouped_results[resource.Course_Code].append(resource)
+        else:
+            grouped_results[resource.Course_Code] = [resource]
+
+    return render_template('search.html', data=grouped_results)
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()

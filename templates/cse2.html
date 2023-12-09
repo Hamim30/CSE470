@@ -57,39 +57,32 @@ welcome {{request.user}}
     </ul>
      
 </div>
-
 <div class="main">
-    <h2> 200 level courses</h2>
+    <h2>200 level courses  <button style="position: fixed; top:100px; right: 50px;" onclick="window.location.href = '/comment';">Give FeedBack</button></h2> 
     <hr>
-
-
-<div class="view">
-    <div class="row">
-        <div class="col-12">
-
-            <table class="table">
-                <tbody>
-                  {% for d,v in data.items%}
-                 
-                  <a ><img src="/static/pic/cse2/{{d}}.png" height="200px" alt="Image" class="image"></a>
-                        <div class="popup">
-                        <div class="popup-content">
-                            <span class="closeButton">&times;</span>
-                            
-                            {% for j in v %}
-                            <br> {{j.texxt}} <a  href="{{j.file.url}}">{{j.file}}</a> <br>
-                            
-                                {% endfor %}
-                    </div>
-                    </div>
-                        
     
-                  {% endfor %}
-                </tbody>
-              </table>
-
-
-
+    <div class="view">
+        <div class="row">
+            <div class="col-12">
+                <table class="table">
+                    <tbody>
+                        {% for course_code, resources in grouped_resources.items() %}
+                            <a><img src="/static/pic/cse2/{{ course_code }}.png" height="200px" alt="Image" class="image"></a>
+                            <div class="popup">
+                                <div class="popup-content">
+                                    <span class="closeButton">&times;</span>
+                                    <h3>Course Code: {{ course_code }}</h3>
+                                    <ol>
+                                        {% for resource in resources %}
+                                            <li><a href="{{ url_for('serve_file', filename=resource.up_file) }}" target="_blank">Show File {{ resource.unique_name }}</a></li>
+                                        {% endfor %}
+                                    </ol>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
@@ -141,9 +134,7 @@ welcome {{request.user}}
 <script src="/static/script.js"></script>
    
 
-    {% comment %} <a href="" class="href"><img src="/static/pic/cse1/cse111.png" height="200px"></a>
-    <br>
-     {% endcomment %}
+    
    
 </div>
 </body>

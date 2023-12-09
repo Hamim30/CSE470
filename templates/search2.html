@@ -54,36 +54,37 @@
         <li> <a href="https://www.bracu.ac.bd/sites/default/files/academics/Year-planner/Year%20Planner%202023%20Trimester%20-%20Final%20Version-4.pdf">Calendar</a></li>
     </ul>
 </div>
-    <div class="main">
-        <div class="view">
-            <div class="row">
-                <div class="col-12">
-                    <table class="table">
-                        <tbody>
-                            {% for d, v in data.items() %}
-                                <tr>
-                                    <td>
-                                        <a href="#" class="openButton">
-                                            <img src="{{ url_for('static', filename='pic/' + d + '.png') }}" height="200px" alt="Image" class="image">
+<div class="main">
+    <div class="view">
+        <div class="row">
+            <div class="col-12">
+                <table class="table">
+                    <tbody>
+                        {% for d in data %}
+                            <tr>
+                                <td>
+                                    <div class='imgContainer'>
+                                        <a class='imgtxt'>
+                                            <img src="{{ url_for('static', filename='pic/white.png') }}" height="200px" alt="Image" class="image">
+                                            {{ d.initial }}
                                         </a>
-                                        <div class="popup">
-                                            <div class="popup-content">
-                                                <span class="closeButton">&times;</span>
-                                                {% for j in v %}
-                                                    <br> {{ j.Description }} <a href="{{ j.up_file.url }}">{{ j.up_file }}</a> <br>
-                                                {% endfor %}
-                                            </div>
+                                    </div>
+                                    <div class="popup">
+                                        <div class="popup-content">
+                                            <span class="closeButton">&times;</span>
+                                            <img src="{{ url_for('static', filename='faculty/' + d.initial + '.png') }}" height="450px" width="800px" alt="Image">
                                         </div>
-                                    </td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-    
+</div>
+
     
     <style>
         .popup {

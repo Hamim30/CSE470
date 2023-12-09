@@ -157,6 +157,36 @@ welcome {{request.user}}
                      
                   </div>
               </div>
+
+
+              <a><img src="/static/pic/conference.png" height="200px" alt="Image" class="image" onclick="openPopup(4)"></a>
+              <div class="popup" id="popup4">
+                  <div class="popup-content">
+                      <span class="closeButton" onclick="closePopup(2)">&times;</span>
+                      <form method="post" action="/submittttt" id="form3" style="text-align: left;">
+                          <!-- Add your form fields and content for the second popup here -->
+                          <div style="display: flex; flex-direction: column; align-items: start;">
+                            <label for="name">conference name:</label>
+                            <input type="text" id="name" name="name">
+                          </div>
+                          <div style="display: flex; flex-direction: column; align-items: start;">
+                            <label for="">Theme:</label>
+                            <input type="text" id="venu" name="venu">
+                          </div>
+                          <div style="display: flex; flex-direction: column; align-items: start;">
+                            <label for="edes">Conference Description:</label>
+                            <input type="text" id="edes" name="edes">
+                          </div>
+                          <div style="display: flex; flex-direction: column; align-items: start;">
+                            <label for="info">Additional Information or Conference Link:</label>
+                            <textarea name="info" id="info"></textarea>
+                          </div>
+                          <input type="submit" value="Submit">
+                        </form>
+                        <a href="/conference" type="submit" >View all</a>
+                     
+                  </div>
+              </div>
           </div>
       </div>
   </div>

@@ -7,6 +7,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = "sqlite:///resources.db"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['UPLOAD_FOLDER'] = 'uploads'
 db = SQLAlchemy(app)  # Use a single SQLAlchemy instance for the app
+app.app_context().push()
 
 class Resources(db.Model):
     sno = db.Column(db.Integer, primary_key=True)
@@ -50,6 +51,15 @@ class Internship(db.Model):
     requirements = db.Column(db.String(500), nullable=False)
     info = db.Column(db.String(500), nullable=False)
 
+class Conference(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    venue = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    info = db.Column(db.Text, nullable=False)
+
+
+    
 if __name__ == '__main__':
     with app.app_context():
 
