@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
-{% block title %} Home {% endblock title %}
-welcome {{request.user}}
+{% block title %} Alumni page {% endblock title %}
 {% block body %}
 
 <input type="checkbox" id="openSidebar">
@@ -46,18 +45,28 @@ welcome {{request.user}}
             </ul>
         
         </li>
-        <li> <a href="#">Thesis</a></li>
+        <li> <a href="/postt">Thesis</a></li>
         <li> <a href="/faculty">Faculty Informations</a></li>
-        <li><a href="\courseinfo">Course Info</a></li>
+        <li><a href="/courseinfo">Course Info</a></li>
         <li> <a href="#">Contact Us</a></li>
         <li> <a href="https://www.bracu.ac.bd/sites/default/files/academics/Year-planner/Year%20Planner%202023%20Trimester%20-%20Final%20Version-4.pdf">Calendar</a></li>
     </ul>
 </div>
 
-<div style=" display: flex; justify-content: center; align-items: center; background-color: rgb(233, 245, 250);background-repeat: no-repeat;  height: 100%; padding: 10px 50px;">
-    <img src="{{ url_for('static', filename='pic/brac_logo.gif') }}">
+<div style=" 
+    display: flex; 
+    justify-content: center;
+     align-items: center; 
+     background-color: rgb(233, 245, 250);
+     background-repeat: no-repeat;  
+     height: 100%; 
+     padding: 10px 50px;">
+    
 
     <style>
+        h1{
+            color: blue;
+        }
         .popup {
             display: none;
             position: fixed;
@@ -123,12 +132,16 @@ td {
         overflow: hidden; /* Hide text that overflows */
         text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
     }
-
+table{
+    margin-right: 60px;
+    margin-top: -200px;
+   
+}
 
 
     </style>
 <table>
-    <caption> Foreign Company </caption>
+    <caption> <h1>Local Company</h1> </caption>
     <tr class="table-row">
         <th class="col-divider">Name</th>
     <th class="col-divider">E-mail</th>
@@ -138,16 +151,16 @@ td {
     </tr>
     <tr>
         <td colspan="4"><hr></td>
-        {% for name, email, cname, c_type, info in alumnyy  %}
-        {% if  c_type=='Foreign Company' %}
+        {% for e in alumnyy  %}
+        {% if  e['c_type']=='Local Company' %}
     </tr>
     
         <tr class="table-row">
-            <td>{{ name }}</td>
-            <td>{{ email }}</td>
-            <td>{{ cname }}</td>
-            <td>{{ c_type }}</td>
-            <td>{{ info }}</td>
+            <td>{{ e['name'] }}</td>
+            <td>{{ e['email'] }}</td>
+            <td>{{ e['c_name'] }}</td>
+            <td>{{ e['c_type']}}</td>
+            <td>{{ e['info'] }}</td>
         </tr>
         <tr>
             <td colspan="4"><hr></td>
@@ -157,6 +170,36 @@ td {
     
 </table>
 
+
+<table>
+    <caption> <h1>Foreign Company </h1></caption>
+    <tr class="table-row">
+        <th class="col-divider">Name</th>
+    <th class="col-divider">E-mail</th>
+    <th class="col-divider">Company Name</th>
+    <th class="col-divider">Company origin</th>
+        <th>Information</th>
+    </tr>
+    <tr>
+        <td colspan="4"><hr></td>
+        {% for e in alumnyy  %}
+        {% if  e['c_type']=='Foreign Company' %}
+    </tr>
+    
+        <tr class="table-row">
+            <td>{{ e['name'] }}</td>
+            <td>{{ e['email'] }}</td>
+            <td>{{ e['c_name'] }}</td>
+            <td>{{ e['c_type']}}</td>
+            <td>{{ e['info'] }}</td>
+        </tr>
+        <tr>
+            <td colspan="4"><hr></td>
+        </tr>
+        {% endif %}
+    {% endfor %}
+    
+</table>
     <script src="/static/js/script.js"></script>
 </div>
 

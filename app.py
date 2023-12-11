@@ -192,8 +192,12 @@ c_types=[]
 
 @app.route('/alumni')
 def alumni():
-   
-    return render_template('alumni.html', alumnyy=zip(names, emails, c_names,c_types, dess))
+    alumnyy = [    ]
+    for i in range(len(names)):
+        alumnyy+=[{'name':names[i],'email':emails[i],'c_name':c_names[i],'c_type':c_types[i],'info':dess[i]}]
+
+    print(alumnyy)
+    return render_template('alumni.html', alumnyy=alumnyy)
 
 @app.route('/submitt', methods=['POST'])
 def submitt():
