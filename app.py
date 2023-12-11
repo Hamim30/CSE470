@@ -4,10 +4,10 @@ from datetime import datetime
 import os
 from werkzeug.utils import secure_filename
 from itertools import groupby
-from model import Resources,app,db,Comment,Faculty,Event,Internship,Conference
+from model import Resources,app,db,Comment,Faculty,Event,Internship,Conference,Thesis
 from flask_mail import Mail, Message
-
-
+import view
+import model
 
 
 
@@ -46,242 +46,114 @@ app.config['MAIL_USE_SSL'] = os.getenv('MAIL_USE_SSL') == 'True'
 mail = Mail(app)
 
 @app.route('/postt')
-def postt():
+def postt_view():
     comments = Comment.query.filter_by(parent_id=None).all()
     return render_template('postt.html', comments=comments)
 
 @app.route('/add_comment', methods=['POST'])
 def add_comment():
-    text = request.form.get('comment_text')
-    parent_id = request.form.get('parent_id', None)
+    return model.add_comment_model()
 
-    new_comment = Comment(text=text, parent_id=parent_id)
-    db.session.add(new_comment)
-    db.session.commit()
-
-    return redirect(url_for('postt'))
 @app.route('/delete_comment/<int:comment_id>', methods=['GET'])
 def delete_comment(comment_id):
-    comment_to_delete = Comment.query.get(comment_id)
+    return model.delete_comment_model(comment_id=comment_id)
 
-    if comment_to_delete:
-        # Delete the comment and its replies
-        db.session.delete(comment_to_delete)
-        db.session.commit()
+@app.route('/thesisjournal')
+def thesis_journal():
+    return view.thesis_journal_view()
 
-    return redirect(url_for('postt'))
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
+
+@app.route('/submit1', methods=['POST','GET'])
+def submit1():
+    return model.submit1_model(request=request)
 
 @app.route('/')
 def homme():
-    return render_template('index.html')
+    return view.homme_view()
 @app.route('/index')
 def home():
-    return render_template('index.html')
+    return view.home_view()
 @app.route('/courseinfo')
 def cinfo():
-    return render_template('courseinfo.html')
+    return view.cinfo_view()
 
 
 #Faculty Section Started
 @app.route('/faculty_form', methods=['GET', 'POST'])
 def faculty_form():
-    
-    if request.method == 'POST':
-        full_name = request.form['full_name']
-        initial = request.form['initial']
-        email = request.form['email']
-        thesis_supervision = request.form['thesis_supervision']
-        research_interest = request.form['research_interest']
-        #routine = request.files['routine'].read()  # Read image file as binary data
-        routine_file = request.files['routine']
-
-        #routine = request.files['routine']
-        #filename = secure_filename(routine.filename) 
-
-        
-        filename = secure_filename(routine_file.filename)
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-        routine_file.save(file_path)
-
-        new_faculty = Faculty(
-            full_name=full_name,
-            initial=initial,
-            email=email,
-            thesis_supervision=thesis_supervision,
-            research_interest=research_interest,
-            routine=filename  # Store the file name in the database
-        )   
-       
-      
-
-        
-        
-        db.session.add(new_faculty)
-        db.session.commit()
-
-    
-    return render_template('faculty_form.html')
+    return model.faculty_form_model(request)
 
 
 @app.route('/faculty')
 def faculty():
-    faculty = Faculty.query.all()
-    return render_template('faculty.html', faculty=faculty)
+    return view.faculty_view()
 
 @app.route('/faculty_description/<int:sno>', methods=['GET', 'POST'])
 def delete(sno):
-    faculty = Faculty.query.filter_by(sno=sno).first()
-    faculty_email= faculty.email 
-    print(faculty_email)
-    if request.method == 'POST':
-        sender = request.form['sender']
-        subject = request.form['subject']
-        body = request.form['body']
-        print(sender)
-        print(subject) 
-        print(body)
-        # Create a message object
-        message = Message(subject=subject,
-                          sender=sender,
-                          recipients=[faculty_email],
-                          body=body)
-
-        try:
-    # Send the email
-            mail.send(message)
-            return 'Email sent successfully!'
-        except Exception as e:
-            app.logger.error(f"Failed to send email: {str(e)}")
-            return 'Failed to send email. Please check logs for more details.'
-
-    
-    return render_template('faculty_description.html', faculty=faculty)
-
-#faculty Section Ended
+    return model.delete_model(sno)
 
 @app.route('/Add_resources', methods=['GET', 'POST'])
 def Add_resources():
-    filename2 = None
-    if request.method == "POST":
-        Course_Code = request.form['Course_Code'].upper()
-        email = request.form['email']
-        student_id = request.form['student_id']
-        f_type = request.form['f_type']
-        Description = request.form['Description']
-
-
-        up_file = request.files['up_file']
-
-        if up_file:
-            
-            # file_data = up_file.read()
-            filename2 = up_file.filename  # Get the filename
-           
-            resource = Resources(
-                email=email, up_file=filename2, student_id=student_id, Course_Code=Course_Code,
-                f_type=f_type, Description=Description
-            )
-
-            db.session.add(resource)
-            db.session.commit()
-            up_file.save(os.path.join(app.config['UPLOAD_FOLDER'], secure_filename(up_file.filename)))
-    all_resource = Resources.query.all()
-    return render_template('Add_resources.html', all_resource=all_resource, filename2=filename2)
+    return model.Add_resources_model(request)
 
 
 @app.route('/view')
 def View():
-    all_resource=Resources.query.all()
-    return render_template('view.html',all_resource=all_resource)
+    return view.View_view()
+
 @app.route('/community')
 def community():
-    return render_template('community.html')
+    return view.community_view()
 
 
 @app.route('/Alumni')
 def Alumni():
-    return render_template('Alumni.html')
+    return view.Alumni_view()
+
 @app.route('/get_file/<int:sno>')
 def get_file(sno):
-    resource = Resources.query.get_or_404(sno)
-    return Response(resource.up_file, content_type="application/octet-stream")  # Update the content type based on the file type
 
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    if 'file' not in request.files:
-        return "No file part"
+    return model.get_file_model(sno)
 
-    file = request.files['file']
+# @app.route('/upload', methods=['POST'])
+# def upload_file():
+#     if 'file' not in request.files:
+#         return "No file part"
 
-    if file.filename == '':
-        return "No selected file"
+#     file = request.files['file']
 
-    # Access the file name
-    filename = file.filename
+#     if file.filename == '':
+#         return "No selected file"
 
-    # You can now use the 'filename' variable as needed
-    return f'Uploaded file name: {filename}'
+#     # Access the file name
+#     filename = file.filename
+
+#     # You can now use the 'filename' variable as needed
+#     return f'Uploaded file name: {filename}'
 @app.route('/download/<filename>')
 def download(filename):
     return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
 
-@app.route('/serve_file/<filename>')
-def serve_file(filename):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
-
-
-
-
-
 
 @app.route('/cse1')
 def cse1():
-    all_resource=Resources.query.filter(Resources.Course_Code.like('cse1%')).all()
-    grouped_resources = {}
-    
-    # Group resources by course code
-    all_resource.sort(key=lambda x: x.Course_Code)
-    for course_code, resources in groupby(all_resource, key=lambda x: x.Course_Code):
-        grouped_resources[course_code] = list(resources)
-    
-    return render_template('cse1.html', grouped_resources=grouped_resources)
+    return view.cse1_view()
 
 
 @app.route('/cse2')
 def cse2():
-    all_resource=Resources.query.filter(Resources.Course_Code.like('cse2%')).all()
-    grouped_resources = {}
-    
-    # Group resources by course code
-    all_resource.sort(key=lambda x: x.Course_Code)
-    for course_code, resources in groupby(all_resource, key=lambda x: x.Course_Code):
-        grouped_resources[course_code] = list(resources)
-    
-    return render_template('cse2.html', grouped_resources=grouped_resources)
+    return view.cse2_view()
 
 @app.route('/cse3')
 def cse3():
-    all_resource=Resources.query.filter(Resources.Course_Code.like('cse3%')).all()
-    grouped_resources = {}
-    
-    # Group resources by course code
-    all_resource.sort(key=lambda x: x.Course_Code)
-    for course_code, resources in groupby(all_resource, key=lambda x: x.Course_Code):
-        grouped_resources[course_code] = list(resources)
-    
-    return render_template('cse3.html', grouped_resources=grouped_resources)
+    return view.cse3_view()
 
 @app.route('/cse4')
 def cse4():
-    all_resource=Resources.query.filter(Resources.Course_Code.like('cse4%')).all()
-    grouped_resources = {}
-    
-    # Group resources by course code
-    all_resource.sort(key=lambda x: x.Course_Code)
-    for course_code, resources in groupby(all_resource, key=lambda x: x.Course_Code):
-        grouped_resources[course_code] = list(resources)
-    
-    return render_template('cse4.html', grouped_resources=grouped_resources)
+    return view.cse4_view()
 
 
 
@@ -293,28 +165,25 @@ course_codes=[]
 
 @app.route('/comment')
 def comment():
-    return render_template('comment.html', course_data=zip(course_codes, Serials, comments, ratings))
+    return view.comment_view(course_codes, Serials, comments, ratings)
 
 
 
 @app.route('/submit', methods=['POST'])
 def submit():
-    comment = request.form.get('comment')
-    rating = request.form.get('rating')
-    course_code=request.form.get('course_code')
-    Serial=request.form.get('num')
-   
-
-    if comment and rating and course_code and Serial:
-        comments.append(comment)
-        ratings.append(int(rating))
-        course_codes.append(course_code)
-        Serials.append(Serial)
-
-    return redirect(url_for('comment'))
+    return model.submit_model(comments,ratings,course_codes,Serials)
 
 
-#alumny
+
+
+# @app.route('/alumni')
+# def alumni():
+#     return view.alumni_view(names, emails, c_names,c_types, dess)
+
+# @app.route('/submitt', methods=['POST'])
+# def submitt():
+#     return model.submitt_model(names,emails,c_names,c_types,dess)
+
 names= []
 emails = []
 c_names=[]
@@ -344,28 +213,19 @@ def submitt():
 
     return redirect(url_for('alumni'))
 
+
+
 #Event
 events = []
 
 @app.route('/event')
 def event():
-    events_from_db = Event.query.all()
-    return render_template('event.html', events=events_from_db)
+    return view.event_view()
 
 @app.route('/submittt', methods=['POST'])
 def submittt():
-    name = request.form.get('name')
-    venue = request.form.get('venu')
-    description = request.form.get('edes')
-    info = request.form.get('info')
 
-    if name and venue and description and info:
-        # Save the event to the database
-        event = Event(name=name, venue=venue, description=description, info=info)
-        db.session.add(event)
-        db.session.commit()
-
-    return redirect(url_for('event'))
+    return model.submittt_model(request)
 
 
 
@@ -374,23 +234,11 @@ interns = []
 
 @app.route('/intern')
 def intern():
-    interns_from_db = Internship.query.all()
-    return render_template('intern.html', internn=interns_from_db)
+    return view.intern_view()
 
 @app.route('/submitttt', methods=['POST'])
 def submitttt():
-    name = request.form.get('name')
-    pos = request.form.get('pos')
-    req = request.form.get('req')
-    info = request.form.get('info')
-
-    if name and pos and req and info:
-        # Save the internship to the database
-        intern = Internship(name=name, position=pos, requirements=req, info=info)
-        db.session.add(intern)
-        db.session.commit()
-
-    return redirect(url_for('intern'))
+    return model.submitttt_model(request=request)
 #conference
 conferences = []
 
@@ -401,44 +249,11 @@ def conference():
 
 @app.route('/submittttt', methods=['POST'])
 def submittttt():
-    name = request.form.get('name')
-    venue = request.form.get('venu')
-    description = request.form.get('edes')
-    info = request.form.get('info')
-
-    if name and venue and description and info:
-        # Save the conference to the database
-        new_conference = Conference(name=name, venue=venue, description=description, info=info)
-        db.session.add(new_conference)
-        db.session.commit()
-
-    return redirect(url_for('conference'))
+    return model.submittttt_model(request)
 
 @app.route('/search', methods=['GET'])
 def search():
-    query = request.args.get('query', '')
-
-    # Search in the 'Faculty' model
-    faculty_results = Faculty.query.filter(Faculty.initial.ilike(f'%{query}%')).all()
-
-    if faculty_results:
-        return render_template('search2.html', data=faculty_results)
-
-    # Search in the 'Resources' model
-    course_list = Resources.query.filter(
-        (Resources.Course_Code.ilike(f'%{query}%'))
-        | (Resources.Description.ilike(f'%{query}%'))
-    ).all()
-
-    # Grouping the results by course
-    grouped_results = {}
-    for resource in course_list:
-        if resource.Course_Code in grouped_results:
-            grouped_results[resource.Course_Code].append(resource)
-        else:
-            grouped_results[resource.Course_Code] = [resource]
-
-    return render_template('search.html', data=grouped_results)
+    return view.search_view(request)
 if __name__ == "__main__":
     with app.app_context():
         db.create_all()

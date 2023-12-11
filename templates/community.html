@@ -187,6 +187,34 @@ welcome {{request.user}}
                      
                   </div>
               </div>
+
+              <a><img src="/static/pic/thesis1.png" height="200px" alt="Image" class="image" onclick="openPopup(5)"></a>
+              <div class="popup" id="popup5">
+                  <div class="popup-content">
+                      <span class="closeButton" onclick="closePopup(5)">&times;</span>
+                      <form method="post" action="/submit1" id="form5" style="text-align: left;" enctype="multipart/form-data">
+
+                        <!-- Add your form fields and content for the third popup here -->
+                        <div style="display: flex; flex-direction: column; align-items: start;">
+                            <label for="name">Topic Name:</label>
+                            <input type="text" id="name" name="name">
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: start;">
+                            <label for="pos">Department:</label>
+                            <input type="text" id="pos" name="pos">
+                        </div>
+                        <div style="display: flex; flex-direction: column; align-items: start;">
+                            <label for="file_path">Upload File</label>
+                            <input type="file" name="file_path" id="file_path">
+                        </div>
+                        <input type="submit" value="Submit">
+                    </form>
+                    <a href="/thesisjournal" type="submit">View all</a>
+                    
+                    
+                     
+                  </div>
+              </div>
           </div>
       </div>
   </div>

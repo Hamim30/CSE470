@@ -46,16 +46,16 @@ welcome {{request.user}}
             </ul>
         
         </li>
-        <li> <a href="#">Thesis</a></li>
+        <li> <a href="/postt">Thesis</a></li>
         <li> <a href="/faculty">Faculty Informations</a></li>
-        <li><a href="\courseinfo">Course Info</a></li>
+        <li><a href="/courseinfo">Course Info</a></li>
         <li> <a href="#">Contact Us</a></li>
         <li> <a href="https://www.bracu.ac.bd/sites/default/files/academics/Year-planner/Year%20Planner%202023%20Trimester%20-%20Final%20Version-4.pdf">Calendar</a></li>
     </ul>
 </div>
 
 <div style=" display: flex; justify-content: center; align-items: center; background-color: rgb(233, 245, 250);background-repeat: no-repeat;  height: 100%; padding: 10px 50px;">
-    <img src="{{ url_for('static', filename='pic/brac_logo.gif') }}">
+    
 
     <style>
         .popup {
@@ -123,40 +123,120 @@ td {
         overflow: hidden; /* Hide text that overflows */
         text-overflow: ellipsis; /* Display ellipsis (...) for overflowed text */
     }
+    table {
+        margin-right: 60px;
+        margin-top: -150px;
+        margin-bottom: 200px; /* Adjust the value as needed */
+    }
 
-
+ 
 
     </style>
+   
 <table>
-    <caption> Foreign Company </caption>
+    <caption > <b style="color: blue;"> Computer science(CS) </b> </caption>
     <tr class="table-row">
-        <th class="col-divider">Name</th>
-    <th class="col-divider">E-mail</th>
-    <th class="col-divider">Company Name</th>
-    <th class="col-divider">Company origin</th>
-        <th>Information</th>
+        <th class="col-divider">Topic Name</th>
+    <th class="col-divider">Department</th>
+    <th class="col-divider">journal link/File</th>
+     
     </tr>
     <tr>
         <td colspan="4"><hr></td>
-        {% for name, email, cname, c_type, info in alumnyy  %}
-        {% if  c_type=='Foreign Company' %}
     </tr>
+   
     
-        <tr class="table-row">
-            <td>{{ name }}</td>
-            <td>{{ email }}</td>
-            <td>{{ cname }}</td>
-            <td>{{ c_type }}</td>
-            <td>{{ info }}</td>
-        </tr>
-        <tr>
+    {% for thesis in theses %}
+    
+    <tr>
+        {% if thesis.file_path and thesis.department=='ss' %}
+        <td>{{ thesis.topic_name }}</td>
+        <td>{{ thesis.department }}</td>
+        <td>
+            
+                <a href="{{ url_for('uploaded_file', filename=thesis.file_path) }}" target="_blank">View File</a>
+                <a href="{{ url_for('download', filename=thesis.file_path) }}" target="_blank">download File</a>
+   
+            {% endif %}
+        </td>
+    </tr>
+{% endfor %}
             <td colspan="4"><hr></td>
         </tr>
-        {% endif %}
-    {% endfor %}
+
+    
+</table>
+<br>
+<table>
+    <caption > <b style="color: blue;"> Computer science and engineering (CSE) </b> </caption>
+    
+    <tr class="table-row">
+        <th class="col-divider">Topic Name</th>
+    <th class="col-divider">Department</th>
+    <th class="col-divider">journal link/File</th>
+     
+    </tr>
+    <tr>
+        <td colspan="4"><hr></td>
+    </tr>
+   
+    
+    {% for thesis in theses %}
+    
+    <tr>
+        {% if thesis.file_path and thesis.department=='cse' %}
+        <td>{{ thesis.topic_name }}</td>
+        <td>{{ thesis.department }}</td>
+        <td>
+            
+                <a href="{{ url_for('uploaded_file', filename=thesis.file_path) }}" target="_blank">View File</a>
+                <a href="{{ url_for('download', filename=thesis.file_path) }}" target="_blank">download File</a>
+   
+            {% endif %}
+        </td>
+    </tr>
+{% endfor %}
+            <td colspan="4"><hr></td>
+        </tr>
+
     
 </table>
 
+
+<br>
+<table>
+    <caption > <b style="color: blue;"> Electrical and Electronics Engineering (EEE) </b> </caption>
+    <tr class="table-row">
+        <th class="col-divider">Topic Name</th>
+    <th class="col-divider">Department</th>
+    <th class="col-divider">journal link/File</th>
+     
+    </tr>
+    <tr>
+        <td colspan="4"><hr></td>
+    </tr>
+   
+    
+    {% for thesis in theses %}
+    
+    <tr>
+        {% if thesis.file_path and thesis.department=='eee' %}
+        <td>{{ thesis.topic_name }}</td>
+        <td>{{ thesis.department }}</td>
+        <td>
+            
+                <a href="{{ url_for('uploaded_file', filename=thesis.file_path) }}" target="_blank">View File</a>
+                <a href="{{ url_for('download', filename=thesis.file_path) }}" target="_blank">download File</a>
+   
+            {% endif %}
+        </td>
+    </tr>
+{% endfor %}
+            <td colspan="4"><hr></td>
+        </tr>
+
+    
+</table>
     <script src="/static/js/script.js"></script>
 </div>
 

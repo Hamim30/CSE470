@@ -64,14 +64,30 @@ welcome {{request.user}}
                 <table class="table">
                     <tbody>
                         {% for course_code, resources in grouped_resources.items() %}
+
                             <a><img src="/static/pic/cse1/{{ course_code }}.png" height="200px" alt="Image" class="image"></a>
                             <div class="popup">
                                 <div class="popup-content">
                                     <span class="closeButton">&times;</span>
+
                                     <h3>Course Code: {{ course_code }}</h3>
+                                    <h1> Theory Files</h1>
                                     <ol>
                                         {% for resource in resources %}
-                                            <li><a href="{{ url_for('serve_file', filename=resource.up_file) }}" target="_blank">Show File {{ resource.unique_name }}</a></li>
+                                          {% if resource.f_type=='theory' %}
+                                          <li> {{resource.Description}}
+                                            <a href="{{ url_for('uploaded_file', filename=resource.up_file) }}" target="_blank">Show File {{ resource.unique_name }}</a> <a href="{{ url_for('download', filename=resource.up_file) }}" target="_blank">download File</a></li>
+                                            {% endif %}
+                                            {% endfor %}
+                                    </ol>
+                                    <h1> Lab Files </h1>
+                                    <ol>
+                                        {% for resource in resources %}
+                                          {% if resource.f_type=='lab' %}  
+                                          
+                                        <li> {{resource.Description}} <a href="{{ url_for('uploaded_file', filename=resource.up_file) }}" target="_blank"> Show File {{ resource.unique_name }}</a> <a href="{{ url_for('download', filename=resource.up_file) }}" target="_blank">download File</a></li>
+                                        
+                                        {% endif %}
                                         {% endfor %}
                                     </ol>
                                 </div>

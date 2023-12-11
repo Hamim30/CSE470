@@ -55,12 +55,16 @@
 
 <img src="static/pic/study" alt="">
 <div style=" display: flex; justify-content: center; align-items: center; background-color: rgb(233, 245, 250);background-repeat: no-repeat;  height: 100%; padding: 10px 50px;">
-    <img src="{{ url_for('static', filename='pic/brac_logo.gif') }}">
+   
 <body>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 
-    <div class="container">
+    <div class="container facc">
+        <h1> CSE </h1>
+
         {% for f in faculty %}
+        {% if f.department=='cse' %}
+
         <!-- Faculty Containers -->
         <div class="faculty-container">
             <div class="poster">
@@ -70,6 +74,32 @@
                 <a href="/faculty_description/{{f.sno}}" class="show-details">Show Details</a>
             </div>
         </div>
+        {% endif %}
+        {% endfor %}
+       
+
+
+        <!-- Add more faculty containers here -->
+
+    </div>
+
+
+    <div class="container facc">
+        <h1> EEE </h1>
+
+        {% for f in faculty %}
+        {% if f.department=='EEE' %}
+
+        <!-- Faculty Containers -->
+        <div class="faculty-container">
+            <div class="poster">
+                <span class="initial">{{f.initial}}</span>
+            </div>
+            <div class="details">
+                <a href="/faculty_description/{{f.sno}}" class="show-details">Show Details</a>
+            </div>
+        </div>
+        {% endif %}
         {% endfor %}
        
 
@@ -78,6 +108,11 @@
 
     </div>
 </body>
+<style>
+    .facc{
+        margin-top: -400px;
+    }
+</style>
 </html>
 
 {% endblock body %}
